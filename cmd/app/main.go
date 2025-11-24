@@ -1,6 +1,7 @@
 package main
 
 import (
+	"log"
 	"os"
 
 	"github.com/gofiber/fiber/v2"
@@ -18,5 +19,8 @@ func main() {
 		return c.SendString("Hello, World!")
 	})
 
-	app.Listen(os.Getenv("PORT"))
+	err := app.Listen(os.Getenv("PORT"))
+	if err != nil {
+		log.Fatalf("Can't start the app: ", err)
+	}
 }
