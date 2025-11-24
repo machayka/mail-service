@@ -1,0 +1,7 @@
+services:
+  mail-service:
+    build: .
+    ports:
+      - "420:420"
+    env_file:
+      - .env
