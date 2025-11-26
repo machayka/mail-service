@@ -2,7 +2,7 @@
 package initializers
 
 import (
-	"errors"
+	"fmt"
 
 	"github.com/joho/godotenv"
 )
@@ -10,7 +10,7 @@ import (
 func LoadEnvVariables() error {
 	err := godotenv.Load()
 	if err != nil {
-		return errors.New("error loading .env file")
+		return fmt.Errorf("error loading .env file: %w", err)
 	}
 	return nil
 }

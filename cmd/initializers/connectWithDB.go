@@ -8,11 +8,11 @@ import (
 	_ "github.com/lib/pq"
 )
 
-var DB *sql.DB
+var db *sql.DB
 
 func Connect() error {
 	var err error
-	DB, err = sql.Open("postgres",
+	db, err = sql.Open("postgres",
 		fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=disable",
 			os.Getenv("DB_HOST"),
 			os.Getenv("DB_PORT"),
@@ -22,12 +22,15 @@ func Connect() error {
 	if err != nil {
 		return err
 	}
-	if err = DB.Ping(); err != nil {
+	if err = db.Ping(); err != nil {
 		return err
 	}
 	return nil
 }
 
 func GetDB() *sql.DB {
-	return DB
+	if db == nil {
+		panic("database not initialized, call Connect() first")
+	}
+	return db
 }

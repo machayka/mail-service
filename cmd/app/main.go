@@ -1,12 +1,14 @@
 package main
 
 import (
-	"fmt"
 	"log"
 	"os"
 
 	"github.com/gofiber/fiber/v2"
+	formHandler "github.com/machayka/mail-service/cmd/handlers/form"
 	"github.com/machayka/mail-service/cmd/initializers"
+	formRepo "github.com/machayka/mail-service/cmd/repositories/form"
+	formService "github.com/machayka/mail-service/cmd/services/form"
 )
 
 func init() {
@@ -19,22 +21,32 @@ func init() {
 }
 
 func main() {
-	app := fiber.New()
 	db := initializers.GetDB()
 
-	app.Get("/", func(c *fiber.Ctx) error {
-		rows, err := db.Query("SELECT id, name, salary, age FROM employees order by id")
-		if err != nil {
-			return c.Status(500).SendString(err.Error())
+	defer func() {
+		if err := db.Close(); err != nil {
+			log.Fatal(err)
 		}
-		defer rows.Close()
-		fmt.Println("Rows: ", rows)
-		return c.SendString("Hello, World!")
-	})
+	}()
 
-	// Potrzebuje handlera do sprawdzenia czy id w bazie istieje
+	fRepo := formRepo.NewFormRepository(db)
+	fService := formService.NewFormService(fRepo)
+	fHandler := formHandler.NewFormHandler(fService)
 
-	if err := app.Listen(os.Getenv("PORT")); err != nil {
+	app := fiber.New()
+	//	app.Use(recover.New())
+
+	app.Post("/forms/:id", fHandler.FormHandler)
+
+	port := os.Getenv("PORT")
+
+	if port == "" {
+		log.Fatal("missing PORT env")
+	}
+	if string(port[0]) != ":" {
+		port = ":" + port
+	}
+	if err := app.Listen(port); err != nil {
 		log.Fatal(err)
 	}
 }
