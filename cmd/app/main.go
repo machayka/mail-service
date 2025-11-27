@@ -5,23 +5,21 @@ import (
 	"os"
 
 	"github.com/gofiber/fiber/v2"
-	formHandler "github.com/machayka/mail-service/cmd/handlers/form"
-	"github.com/machayka/mail-service/cmd/initializers"
-	formRepo "github.com/machayka/mail-service/cmd/repositories/form"
-	formService "github.com/machayka/mail-service/cmd/services/form"
+	"github.com/machayka/mail-service/internal/form"
+	"github.com/machayka/mail-service/internal/initializers"
 )
 
 func init() {
 	if err := initializers.LoadEnvVariables(); err != nil {
 		log.Fatal(err)
 	}
-	if err := initializers.Connect(); err != nil {
-		log.Fatal(err)
-	}
 }
 
 func main() {
-	db := initializers.GetDB()
+	db, err := initializers.Connect()
+	if err != nil {
+		log.Fatal(err)
+	}
 
 	defer func() {
 		if err := db.Close(); err != nil {
@@ -29,9 +27,9 @@ func main() {
 		}
 	}()
 
-	fRepo := formRepo.NewFormRepository(db)
-	fService := formService.NewFormService(fRepo)
-	fHandler := formHandler.NewFormHandler(fService)
+	fRepo := form.NewRepository(db)
+	fService := form.NewService(fRepo)
+	fHandler := form.NewHandler(fService)
 
 	app := fiber.New()
 	//	app.Use(recover.New())

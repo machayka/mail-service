@@ -1,5 +1,5 @@
-// Package models jest odpowiedzialny za definicje structów
-package models
+// Package form jest odpowiedzialny za definicje structów
+package form
 
 import (
 	"time"

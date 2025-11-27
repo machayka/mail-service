@@ -3,20 +3,27 @@ package form
 
 import (
 	"github.com/gofiber/fiber/v2"
-	"github.com/machayka/mail-service/cmd/models"
 )
 
-func (h *FormHandler) FormHandler(c *fiber.Ctx) error {
-	var formData models.FormData
+type Handler struct {
+	service *Service
+}
+
+func NewHandler(service *Service) *Handler {
+	return &Handler{service: service}
+}
+
+func (h *Handler) FormHandler(c *fiber.Ctx) error {
+	var formData FormData
 	if err := c.BodyParser(&formData); err != nil {
 		return fiber.ErrBadRequest
 	}
 
 	id := c.Params("id")
 
-	err := h.service.SendMessage(id, &formData)
+	form, err := h.service.SendMessage(id, &formData)
 	if err != nil {
-		if err.Error() == "not found" {
+		if form == nil {
 			// TODO: zrobić przekierowanie na rejestracje formularza
 			return fiber.ErrLocked
 		}
