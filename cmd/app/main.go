@@ -2,21 +2,20 @@ package main
 
 import (
 	"log"
-	"os"
 
 	"github.com/gofiber/fiber/v2"
+	"github.com/machayka/mail-service/config"
 	"github.com/machayka/mail-service/internal/form"
 	"github.com/machayka/mail-service/internal/initializers"
 )
 
-func init() {
-	if err := initializers.LoadEnvVariables(); err != nil {
+func main() {
+	cfg, err := config.Load()
+	if err != nil {
 		log.Fatal(err)
 	}
-}
 
-func main() {
-	db, err := initializers.Connect()
+	db, err := initializers.Connect(cfg)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -36,15 +35,5 @@ func main() {
 
 	app.Post("/forms/:id", fHandler.FormHandler)
 
-	port := os.Getenv("PORT")
-
-	if port == "" {
-		log.Fatal("missing PORT env")
-	}
-	if string(port[0]) != ":" {
-		port = ":" + port
-	}
-	if err := app.Listen(port); err != nil {
-		log.Fatal(err)
-	}
+	log.Fatal(app.Listen(cfg.Server.Port))
 }
