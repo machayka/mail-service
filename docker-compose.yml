@@ -1,6 +1,7 @@
 services:
   mail-service:
     build: .
-    network_mode: "host"
+    ports:
+      - "420:420"
     env_file:
       - .env

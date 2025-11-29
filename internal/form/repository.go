@@ -3,8 +3,6 @@ package form
 
 import (
 	"database/sql"
-
-	"github.com/google/uuid"
 )
 
 type Repository struct {
@@ -15,7 +13,7 @@ func NewRepository(db *sql.DB) *Repository {
 	return &Repository{db: db}
 }
 
-func (r *Repository) GetByID(id uuid.UUID) (*Form, error) {
+func (r *Repository) GetByID(id string) (*Form, error) {
 	var form Form
 	err := r.db.QueryRow(
 		"SELECT id, email, created_at FROM forms WHERE id = $1",
@@ -23,7 +21,7 @@ func (r *Repository) GetByID(id uuid.UUID) (*Form, error) {
 	).Scan(&form.ID, &form.Email, &form.CreatedAt)
 
 	if err == sql.ErrNoRows {
-		return nil, nil
+		return nil, ErrFormNotFound
 	}
 	return &form, err
 }
