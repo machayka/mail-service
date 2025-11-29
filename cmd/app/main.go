@@ -4,6 +4,7 @@ import (
 	"log"
 
 	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/template/html/v2"
 	"github.com/machayka/mail-service/config"
 	"github.com/machayka/mail-service/internal/form"
 	"github.com/machayka/mail-service/internal/initializers"
@@ -30,10 +31,14 @@ func main() {
 	fService := form.NewService(fRepo)
 	fHandler := form.NewHandler(fService)
 
-	app := fiber.New()
+	engine := html.New("./views", ".html")
+
+	app := fiber.New(fiber.Config{Views: engine})
 	//	app.Use(recover.New())
 
-	app.Post("/forms/:id", fHandler.FormHandler)
+	app.Post("/submit/:id", fHandler.FormHandler)
+	app.Get("/add/:id", fHandler.NewForm)
+	app.Post("/add", fHandler.AddForm)
 
 	log.Fatal(app.Listen(cfg.Server.Port))
 }

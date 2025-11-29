@@ -1,0 +1,20 @@
+<h2> Uruchom formularz kontaktowy</h2>
+<p>Formularz został wypełniony po raz pierwszy. Najprawdopodobniej oznacza to, że jesteś właścicielem strony internetowej, na której właśnie uruchomiłeś możliwość kontaktu przez formularz. Użytkownicy mogą podawać swój adres e-mail i wysyłać wiadomości, ale aby mechanizm działał poprawnie, potrzebny jest serwer pocztowy, który przetworzy dane z formularza i dostarczy je na właściwy adres.</p>
+
+<p>Poniżej znajdziesz formularz, w którym wpiszesz adres e-mail, na jaki mają trafiać wiadomości wysyłane z twojej strony.</p>
+
+<form action="/add" method="POST">
+  <label for="id">Identyfikator formularza:</label><br>
+  <input type="text" id="id" name="id" value="{{.ID}}" readonly><br>
+  <label for="email">Twój email:</label><br>
+  <input type="email" id="email" name="email" required><br>
+  <input type="submit" value="Zapisz">
+</form> 
+
+<p>Po kliknięciu „Zapisz” zostaniesz przekierowany do bezpiecznej strony płatności Stripe. Po opłaceniu subskrypcji funkcja kontaktu przez formularz zostanie aktywowana.</p>
+<p>W każdej chwili możesz zrezygnować z subskrypcji poprzez:</p>
+<li>link do zarządzania subskrypcją, który otrzymasz e-mailem po zakupie, lub</li>
+<li>kontakt mailowy na: kacpermachay@gmail.com.</li>
+<p>Szczegóły dotyczące świadczenia usługi, zasad płatności i rezygnacji znajdziesz w Regulaminie <a href="#">(link)</a>.</p>
+
+{{template "partials/footer" .}}

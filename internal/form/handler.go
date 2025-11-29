@@ -2,6 +2,8 @@
 package form
 
 import (
+	"fmt"
+
 	"github.com/gofiber/fiber/v2"
 )
 
@@ -34,11 +36,7 @@ func (h *Handler) FormHandler(c *fiber.Ctx) error {
 				"message": "Email and message are required",
 			})
 		case ErrFormNotFound:
-			return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
-				"error":   ErrFormNotFound.Error(),
-				"message": "Form is not registered",
-			})
-
+			return c.Redirect(fmt.Sprintf("/add/%v", id))
 		default:
 			return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
 				"error": "Internal server error",
@@ -46,6 +44,7 @@ func (h *Handler) FormHandler(c *fiber.Ctx) error {
 		}
 	}
 
+	// TODO: Tutaj zwrócimy success.html z elegancką informacją zamiast tego co jest teraz
 	return c.Status(fiber.StatusOK).JSON(fiber.Map{
 		"success": true,
 		"message": "Form submitted successfully",
@@ -58,4 +57,27 @@ func (h *Handler) FormHandler(c *fiber.Ctx) error {
 			},
 		},
 	})
+}
+
+func (h *Handler) NewForm(c *fiber.Ctx) error {
+	id := c.Params("id")
+
+	return c.Render("new-form", fiber.Map{
+		"ID": id,
+	})
+}
+
+func (h *Handler) AddForm(c *fiber.Ctx) error {
+	var form Form
+	if err := c.BodyParser(&form); err != nil {
+		return err
+	}
+	err := h.service.RegisterNewForm(&form)
+	// TODO: to na switchach, bo może być dużo rodzajów błedów?
+	if err != nil {
+		return err
+	}
+
+	// TODO: Dopiero jak wsystko pójdzie dobrze z płatnością to zwróć sukces
+	return c.Render("add-form-success", fiber.Map{"stripeUrl": "https://link.com"}) // Link do zarządzanie subskrypcją
 }

@@ -22,5 +22,13 @@ func (s *Service) SendMessage(id string, d *FormData) (form *Form, error error) 
 		return nil, err
 	}
 
+	// TODO: stworzyć pakiet do wysyłania maili i wysłac rzeczywiście tego maila + dodać obsługę błędów
+
 	return form, nil
+}
+
+func (s *Service) RegisterNewForm(form *Form) error {
+	err := s.repo.CreateNewForm(form)
+	// TODO: tu robimy obsługę stripe'a?
+	return err
 }

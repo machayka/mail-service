@@ -2,15 +2,12 @@
 package form
 
 import (
-	"time"
-
 	"github.com/google/uuid"
 )
 
 type Form struct {
-	ID        uuid.UUID `db:"id"`
-	Email     string    `db:"email"`
-	CreatedAt time.Time `db:"created_at"`
+	ID    uuid.UUID `db:"id" form:"id"`
+	Email string    `db:"email" form:"email"`
 }
 
 type FormData struct {
