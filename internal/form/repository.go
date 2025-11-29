@@ -4,9 +4,13 @@ package form
 import (
 	"database/sql"
 	"errors"
-	"fmt"
 
 	"github.com/lib/pq"
+)
+
+var (
+	ErrFormNotFound      = errors.New("not found")
+	ErrFormAlreadyExists = errors.New("uuid already in database")
 )
 
 type Repository struct {
@@ -31,16 +35,14 @@ func (r *Repository) GetByID(id string) (*Form, error) {
 }
 
 func (r *Repository) CreateNewForm(form *Form) error {
-	fmt.Println(form)
 	err := r.db.QueryRow("INSERT INTO forms (id, email) VALUES ($1, $2) RETURNING id, email", form.ID, form.Email).Scan(&form.ID, &form.Email)
 	if err != nil {
 		var pqErr *pq.Error
 		if errors.As(err, &pqErr) {
 			if pqErr.Code == "23505" {
-				return errors.New("uuid already in database")
+				return ErrFormAlreadyExists
 			}
 		}
 	}
-	fmt.Println("New Form: ", form)
 	return err
 }

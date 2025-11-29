@@ -10,7 +10,6 @@ var (
 	ErrEmptyForm    = errors.New("empty form")
 	ErrInvalidEmail = errors.New("invalid email")
 	ErrInvalidUUID  = errors.New("invalid uuid")
-	ErrFormNotFound = errors.New("not found")
 )
 
 func ValidateFormData(d *FormData) error {
