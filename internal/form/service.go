@@ -12,25 +12,25 @@ func NewService(repo *Repository, mailSender *mail.MailService) *Service {
 	return &Service{repo: repo, mailSender: mailSender}
 }
 
-func (s *Service) SendMessage(id string, d *FormData) (f *Form, error error) {
+func (s *Service) SendMessage(id string, d *FormData) error {
 	if err := ValidateFormData(d); err != nil {
-		return nil, err
+		return err
 	}
 	if err := ValidateID(id); err != nil {
-		return nil, err
+		return err
 	}
 
 	f, err := s.repo.GetByID(id) // form from database
 	if err != nil {
-		return nil, err
+		return err
 	}
 
 	err = s.mailSender.SendMessageFromContactForm(f.Email, d.Email, d.Message)
 	if err != nil {
-		return f, err
+		return err
 	}
 
-	return f, nil
+	return nil
 }
 
 func (s *Service) RegisterNewForm(form *Form) error {

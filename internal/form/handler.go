@@ -20,48 +20,23 @@ func (h *Handler) FormHandler(c *fiber.Ctx) error {
 	if err := c.BodyParser(&formData); err != nil {
 		return err
 	}
-	id := c.Params("id")
 
-	form, err := h.service.SendMessage(id, &formData)
+	id := c.Params("id")
+	err := h.service.SendMessage(id, &formData)
 	if err != nil {
-		switch err {
-		case ErrInvalidUUID:
-			return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
-				"error":   ErrInvalidUUID.Error(),
-				"message": "Id must be valid UUID",
-			})
-		case ErrEmptyForm:
-			return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
-				"error":   ErrEmptyForm.Error(),
-				"message": "Email and message are required",
-			})
-		case ErrFormNotFound:
+		if err == ErrFormNotFound {
+			// Przekierowanie do formularza rejestracji nowego formularza
 			return c.Redirect(fmt.Sprintf("/add/%v", id))
-		default:
-			return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
-				"error": "Internal server error",
-			})
 		}
+		return err
 	}
 
-	// TODO: Tutaj zwrócimy success.html z elegancką informacją zamiast tego co jest teraz
-	return c.Status(fiber.StatusOK).JSON(fiber.Map{
-		"success": true,
-		"message": "Form submitted successfully",
-		"data": fiber.Map{
-			"formId": form.ID,
-			"email":  form.Email,
-			"formData": fiber.Map{
-				"email":   formData.Email,
-				"message": formData.Message,
-			},
-		},
-	})
+	// TODO: Tutaj zwrócimy success.html z elegancką informacją
+	return c.SendString("Wiadomość przesłana")
 }
 
 func (h *Handler) NewForm(c *fiber.Ctx) error {
 	id := c.Params("id")
-
 	return c.Render("new-form", fiber.Map{
 		"ID": id,
 	})
@@ -73,11 +48,10 @@ func (h *Handler) AddForm(c *fiber.Ctx) error {
 		return err
 	}
 	err := h.service.RegisterNewForm(&form)
-	// TODO: to na switchach, bo może być dużo rodzajów błedów?
 	if err != nil {
 		return err
 	}
 
-	// TODO: Dopiero jak wsystko pójdzie dobrze z płatnością to zwróć sukces
+	// TODO: Dopiero jak wszystko pójdzie dobrze z płatnością to zwróć sukces
 	return c.Render("add-form-success", fiber.Map{"stripeUrl": "https://link.com"}) // Link do zarządzanie subskrypcją
 }

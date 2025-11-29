@@ -7,7 +7,7 @@ import (
 )
 
 var (
-	ErrEmptyForm    = errors.New("empty form")
+	ErrEmptyForm    = errors.New("empty email or message field")
 	ErrInvalidEmail = errors.New("invalid email")
 	ErrInvalidUUID  = errors.New("invalid uuid")
 )
