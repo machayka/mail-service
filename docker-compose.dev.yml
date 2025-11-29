@@ -1,0 +1,12 @@
+services:
+  mail-service:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    ports:
+      - "420:420"
+    env_file:
+      - .env
+    volumes:
+      - .:/app                    # montuj cały kod - zmiany będą widoczne w kontenerze
+      - /app/bin                  # exclude bin directory (nie nadpisuj)
