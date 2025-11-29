@@ -1,15 +1,18 @@
 // Package form jest odpowiedzialny za logikę biznesową obsługi formularza
 package form
 
+import "github.com/machayka/mail-service/internal/mail"
+
 type Service struct {
-	repo *Repository
+	repo       *Repository
+	mailSender *mail.MailService
 }
 
-func NewService(repo *Repository) *Service {
-	return &Service{repo: repo}
+func NewService(repo *Repository, mailSender *mail.MailService) *Service {
+	return &Service{repo: repo, mailSender: mailSender}
 }
 
-func (s *Service) SendMessage(id string, d *FormData) (form *Form, error error) {
+func (s *Service) SendMessage(id string, d *FormData) (f *Form, error error) {
 	if err := ValidateFormData(d); err != nil {
 		return nil, err
 	}
@@ -17,14 +20,17 @@ func (s *Service) SendMessage(id string, d *FormData) (form *Form, error error) 
 		return nil, err
 	}
 
-	form, err := s.repo.GetByID(id) // form from database
+	f, err := s.repo.GetByID(id) // form from database
 	if err != nil {
 		return nil, err
 	}
 
-	// TODO: stworzyć pakiet do wysyłania maili i wysłac rzeczywiście tego maila + dodać obsługę błędów
+	err = s.mailSender.SendMessageFromContactForm(f.Email, d.Email, d.Message)
+	if err != nil {
+		return f, err
+	}
 
-	return form, nil
+	return f, nil
 }
 
 func (s *Service) RegisterNewForm(form *Form) error {

@@ -21,6 +21,11 @@ type Config struct {
 	Server struct {
 		Port string `env:"PORT" envDefault:":420"`
 	}
+
+	SMTP struct {
+		User string `env:"SMTP_USER,required"`
+		Pass string `env:"SMTP_PASS,required"`
+	}
 }
 
 func Load() (*Config, error) {

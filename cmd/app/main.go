@@ -8,6 +8,7 @@ import (
 	"github.com/machayka/mail-service/config"
 	"github.com/machayka/mail-service/internal/form"
 	"github.com/machayka/mail-service/internal/initializers"
+	"github.com/machayka/mail-service/internal/mail"
 )
 
 func main() {
@@ -27,8 +28,10 @@ func main() {
 		}
 	}()
 
+	mailSender := mail.NewMailService(cfg)
+
 	fRepo := form.NewRepository(db)
-	fService := form.NewService(fRepo)
+	fService := form.NewService(fRepo, mailSender)
 	fHandler := form.NewHandler(fService)
 
 	engine := html.New("./views", ".html")
