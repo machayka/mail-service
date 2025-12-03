@@ -63,3 +63,8 @@ func (r *Repository) UpdateSubscriptionID(formID, subscriptionID string) error {
 	_, err := r.db.Exec("UPDATE forms SET stripe_subscription_id = $1, is_paid = true WHERE id = $2", subscriptionID, formID)
 	return err
 }
+
+func (r *Repository) DeleteForm(subscriptionID string) error {
+	_, err := r.db.Exec("DELETE FROM forms WHERE stripe_subscription_id = $1", subscriptionID)
+	return err
+}

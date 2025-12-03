@@ -75,13 +75,12 @@ func (h *Handler) HandleWebhook(cfg *config.Config) fiber.Handler {
 		}
 
 		signatureHeader := c.Get("Stripe-Signature")
-
 		endpointSecret := cfg.Stripe.WebhookSecret
-
 		event, err := webhook.ConstructEvent(payload, signatureHeader, endpointSecret)
 		if err != nil {
 			return c.Status(fiber.StatusBadRequest).SendString("Invalid signature")
 		}
+
 		switch event.Type {
 		case "checkout.session.completed":
 			var session stripe.CheckoutSession
@@ -124,7 +123,7 @@ func (h *Handler) HandleWebhook(cfg *config.Config) fiber.Handler {
 			if err != nil {
 				return err
 			}
-			err = h.service.repo.ChangePaymentStatus(subscriptionID, false)
+			err = h.service.repo.DeleteForm(subscriptionID)
 			if err != nil {
 				return err
 			}
