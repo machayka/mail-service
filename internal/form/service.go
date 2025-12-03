@@ -1,15 +1,21 @@
 // Package form jest odpowiedzialny za logikę biznesową obsługi formularza
 package form
 
-import "github.com/machayka/mail-service/internal/mail"
+import (
+	"database/sql"
+
+	"github.com/machayka/mail-service/internal/mail"
+	"github.com/machayka/mail-service/internal/payments"
+)
 
 type Service struct {
-	repo       *Repository
-	mailSender *mail.MailService
+	repo          *Repository
+	mailSender    *mail.Service
+	paymentClient *payments.Payment
 }
 
-func NewService(repo *Repository, mailSender *mail.MailService) *Service {
-	return &Service{repo: repo, mailSender: mailSender}
+func NewService(repo *Repository, mailSender *mail.Service, paymentClient *payments.Payment) *Service {
+	return &Service{repo: repo, mailSender: mailSender, paymentClient: paymentClient}
 }
 
 func (s *Service) SendMessage(id string, d *FormData) error {
@@ -26,15 +32,41 @@ func (s *Service) SendMessage(id string, d *FormData) error {
 	}
 
 	err = s.mailSender.SendMessageFromContactForm(f.Email, d.Email, d.Message)
-	if err != nil {
-		return err
-	}
-
-	return nil
-}
-
-func (s *Service) RegisterNewForm(form *Form) error {
-	err := s.repo.CreateNewForm(form)
-	// TODO: tu robimy obsługę stripe'a?
 	return err
 }
+
+func (s *Service) CreateCheckout(f *Form) (string, error) {
+	customerID, err := s.repo.GetStripeCustomerID(f.Email)
+	if err == sql.ErrNoRows {
+		// Użytkownik nie ma customerID w stripe -> musimy go stworzyć
+		customerID, err = s.paymentClient.CreateCustomer(f.Email)
+		if err != nil {
+			return "", err
+		}
+	}
+	if err != nil {
+		return "", err
+	}
+	checkoutURL, subscriptionID, err := s.paymentClient.CreatePayment(customerID)
+	if err != nil {
+		return "", err
+	}
+
+	if err = s.repo.CreateNewForm(f, customerID, subscriptionID); err != nil {
+		return "", err
+	}
+
+	return checkoutURL, err
+}
+
+//
+// func (s *Service) UpdatePaymentStatus(id string, isPaid bool) error {
+// 	// TODO:
+// 	// czy to od stripe'a czyli czy header się zgadza?
+// 	err := s.repo.UpdatePaymentStatus(id, true)
+// 	if err != nil {
+// 		return err
+// 	}
+//
+// 	return nil
+// }

@@ -9,7 +9,7 @@ import (
 )
 
 var (
-	ErrFormNotFound      = errors.New("not found")
+	ErrNotFound          = errors.New("not found")
 	ErrFormAlreadyExists = errors.New("uuid already in database")
 )
 
@@ -29,13 +29,14 @@ func (r *Repository) GetByID(id string) (*Form, error) {
 	).Scan(&form.ID, &form.Email)
 
 	if err == sql.ErrNoRows {
-		return nil, ErrFormNotFound
+		return nil, ErrNotFound
 	}
 	return &form, err
 }
 
-func (r *Repository) CreateNewForm(form *Form) error {
-	err := r.db.QueryRow("INSERT INTO forms (id, email) VALUES ($1, $2) RETURNING id, email", form.ID, form.Email).Scan(&form.ID, &form.Email)
+func (r *Repository) CreateNewForm(form *Form, customerID, subscriptionID string) error {
+	err := r.db.QueryRow("INSERT INTO forms (id, email, stripe_customer_id, stripe_subscription_id) VALUES ($1, $2, $3, $4) RETURNING id, email",
+		form.ID, form.Email, customerID, subscriptionID).Scan(&form.ID, &form.Email)
 	if err != nil {
 		var pqErr *pq.Error
 		if errors.As(err, &pqErr) {
@@ -45,4 +46,10 @@ func (r *Repository) CreateNewForm(form *Form) error {
 		}
 	}
 	return err
+}
+
+func (r *Repository) GetStripeCustomerID(email string) (string, error) {
+	var stripeCustomerID string
+	err := r.db.QueryRow("SELECT stripe_customer_id FROM forms WHERE email = $1", email).Scan(&stripeCustomerID)
+	return stripeCustomerID, err
 }

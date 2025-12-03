@@ -16,21 +16,21 @@ var (
 	ErrFailedToDeliverMail      = errors.New("failed to deliver mail")
 )
 
-type MailService struct {
+type Service struct {
 	smtpHost string
 	smptUser string
 	smtpPass string
 }
 
-func NewMailService(cfg *config.Config) *MailService {
-	return &MailService{
+func NewService(cfg *config.Config) *Service {
+	return &Service{
 		smtpHost: "smtp.gmail.com",
 		smptUser: cfg.SMTP.User,
 		smtpPass: cfg.SMTP.Pass,
 	}
 }
 
-func (s *MailService) SendMessageFromContactForm(to, from, msg string) error {
+func (s *Service) SendMessageFromContactForm(to, from, msg string) error {
 	message := mail.NewMsg()
 	if err := message.From(s.smptUser); err != nil {
 		return ErrFailedToSetFromAddr

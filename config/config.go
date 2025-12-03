@@ -26,6 +26,13 @@ type Config struct {
 		User string `env:"SMTP_USER,required"`
 		Pass string `env:"SMTP_PASS,required"`
 	}
+
+	Stripe struct {
+		Key           string `env:"STRIPE_KEY,required"`
+		PriceID       string `env:"PRICE_ID,required"`
+		Domain        string `env:"DOMAIN,required"`
+		WebhookSecret string `env:"WEBHOOK_SECRET,required"`
+	}
 }
 
 func Load() (*Config, error) {
