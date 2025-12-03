@@ -83,20 +83,65 @@ func (h *Handler) HandleWebhook(cfg *config.Config) fiber.Handler {
 			return c.Status(fiber.StatusBadRequest).SendString("Invalid signature")
 		}
 		switch event.Type {
-		case "checkout.session.completed!":
-			log.Println("checkout.session.completed!")
-			// TODO: Tutaj zmieniamy is_paid na true
-			var subscription stripe.Subscription
-			err := json.Unmarshal(event.Data.Raw, &subscription)
+		case "checkout.session.completed":
+			var session stripe.CheckoutSession
+			err := json.Unmarshal(event.Data.Raw, &session)
 			if err != nil {
-				fmt.Fprintf(os.Stderr, "Error parsing webhook JSON: %v\n", err)
+				log.Println("Error parsing checkout session:", err)
 				return err
 			}
-			log.Println(subscription.ID)
+
+			formID := session.Metadata["form_id"]
+			if formID == "" {
+				log.Println("Missing form_id in metadata")
+				return c.Status(fiber.StatusBadRequest).SendString("Missing form_id")
+			}
+
+			subscriptionID := session.Subscription.ID
+			if subscriptionID == "" {
+				return c.Status(fiber.StatusBadRequest).SendString("Missing subscription ID")
+			}
+
+			err = h.service.repo.UpdateSubscriptionID(formID, subscriptionID)
+			if err != nil {
+				log.Println("Error updating subscription ID:", err)
+				return err
+			}
+
+		case "customer.subscription.created":
+			subscriptionID, err := getSubscriptionIDFromStripe(event)
+			if err != nil {
+				log.Println(err)
+				return err
+			}
+			err = h.service.repo.ChangePaymentStatus(subscriptionID, true)
+			if err != nil {
+				log.Println(err)
+				return err
+			}
+		case "customer.subscription.deleted":
+			subscriptionID, err := getSubscriptionIDFromStripe(event)
+			if err != nil {
+				return err
+			}
+			err = h.service.repo.ChangePaymentStatus(subscriptionID, false)
+			if err != nil {
+				return err
+			}
 		default:
 			log.Printf("Unhandled event type: %s", event.Type)
 		}
 
 		return c.SendStatus(fiber.StatusOK)
 	}
+}
+
+func getSubscriptionIDFromStripe(event stripe.Event) (string, error) {
+	var subscription stripe.Subscription
+	err := json.Unmarshal(event.Data.Raw, &subscription)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error parsing webhook JSON: %v\n", err)
+		return "", err
+	}
+	return subscription.ID, nil
 }

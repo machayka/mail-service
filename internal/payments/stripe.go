@@ -43,7 +43,7 @@ func (p Payment) CreateCustomer(email string) (customerID string, err error) {
 	return result.ID, err
 }
 
-func (p Payment) CreatePayment(customerID string) (checkoutURL, subscriptionID string, err error) {
+func (p Payment) CreatePayment(customerID, formID string) (checkoutURL string, err error) {
 	stripe.Key = p.key
 	params := &stripe.CheckoutSessionParams{
 		LineItems: []*stripe.CheckoutSessionLineItemParams{
@@ -56,6 +56,7 @@ func (p Payment) CreatePayment(customerID string) (checkoutURL, subscriptionID s
 		Mode:       stripe.String(string(stripe.CheckoutSessionModeSubscription)),
 		SuccessURL: stripe.String(p.domain + "/success"),
 	}
+	params.AddMetadata("form_id", formID)
 	result, err := session.New(params)
-	return result.URL, result.ID, err
+	return result.URL, err
 }

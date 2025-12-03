@@ -47,26 +47,14 @@ func (s *Service) CreateCheckout(f *Form) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	checkoutURL, subscriptionID, err := s.paymentClient.CreatePayment(customerID)
-	if err != nil {
+	if err = s.repo.CreateNewForm(f, customerID); err != nil {
 		return "", err
 	}
 
-	if err = s.repo.CreateNewForm(f, customerID, subscriptionID); err != nil {
+	checkoutURL, err := s.paymentClient.CreatePayment(customerID, f.ID.String())
+	if err != nil {
 		return "", err
 	}
 
 	return checkoutURL, err
 }
-
-//
-// func (s *Service) UpdatePaymentStatus(id string, isPaid bool) error {
-// 	// TODO:
-// 	// czy to od stripe'a czyli czy header się zgadza?
-// 	err := s.repo.UpdatePaymentStatus(id, true)
-// 	if err != nil {
-// 		return err
-// 	}
-//
-// 	return nil
-// }
