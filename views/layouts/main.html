@@ -1,10 +1,38 @@
 <!DOCTYPE html>
-<html>
+<html lang="pl" data-theme="light">
   <head>
-    <title>Mail service</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>mail.selfhosting.pl - Prosty serwis do obsługi formularzy kontaktowych</title>
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.14/dist/full.min.css" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              'stripe-blue': '#635bff',
+              'stripe-light': '#f6f9fc',
+            }
+          }
+        }
+      }
+    </script>
+    <style>
+      body {
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+      }
+      main {
+        flex: 1;
+      }
+    </style>
   </head>
 
-  <body>
-    {{embed}}
+  <body class="bg-base-100">
+    <main class="container mx-auto px-4 py-8 max-w-4xl">
+      {{embed}}
+    </main>
   </body>
 </html>

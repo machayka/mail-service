@@ -1,15 +1,56 @@
-<h1>mail.selfhosting.pl</h1>
-<h2>Prosty serwis do obsługi formularzy kontaktowych</h2>
+<div class="hero bg-gradient-to-br from-base-200 via-base-100 to-base-200 shadow-lg -mx-4 -mt-4 mb-12 py-16">
+  <div class="hero-content text-center">
+    <div class="max-w-2xl">
+      <h1 class="text-5xl font-bold mb-4">mail.selfhosting.pl</h1>
+      <p class="text-xl mb-6">Prosty formularz kontaktowy dla Twojej strony internetowej</p>
+      <div class="flex gap-2 justify-center flex-wrap">
+        <span class="badge badge-lg badge-primary">Szybka instalacja</span>
+        <span class="badge badge-lg badge-primary">Bezpieczne</span>
+        <span class="badge badge-lg badge-primary">Przejrzyste</span>
+      </div>
+    </div>
+  </div>
+</div>
 
-<p>Dodaj formularz kontaktowy do swojej strony internetowej bez konieczności posiadania własnego serwera backendowego. Idealne rozwiązanie dla statycznych stron internetowych.</p>
+<h2 class="text-3xl font-bold mb-6">Jak to działa?</h2>
 
-<h3>Jak to działa?</h3>
-<p><strong>1. Wygeneruj unikalny identyfikator (UUID)</strong></p>
-<p>
-  <button onclick="generateUUID()">Wygeneruj UUID</button>
-  <input type="text" id="uuid-output" readonly style="width: 300px; margin-left: 10px;">
-  <button onclick="copyUUID()">Kopiuj</button>
-</p>
+<div class="space-y-8">
+  <div>
+    <h3 class="text-xl font-semibold mb-3">1. Wygeneruj unikalny identyfikator (UUID)</h3>
+    <div class="flex gap-2 my-4 flex-wrap">
+      <button onclick="generateUUID()" class="btn btn-primary">Wygeneruj UUID</button>
+      <input type="text" id="uuid-output" readonly class="input input-bordered flex-1 min-w-[250px]" placeholder="Kliknij 'Wygeneruj UUID'">
+      <button onclick="copyUUID()" class="btn btn-outline">Kopiuj</button>
+    </div>
+  </div>
+
+  <div>
+    <h3 class="text-xl font-semibold mb-3">2. Dodaj formularz do swojej strony</h3>
+    <p class="mb-4">Skopiuj poniższy kod HTML i wklej na swoją stronę, zastępując <code>TWOJ-UUID</code> wygenerowanym identyfikatorem:</p>
+
+    <div class="mockup-code w-full">
+<pre><code>&lt;form action="https://mail.selfhosting.pl/submit/TWOJ-UUID" method="POST"&gt;
+  &lt;label for="email"&gt;Twój email:&lt;/label&gt;
+  &lt;input type="email" id="email" name="email" required&gt;
+
+  &lt;label for="message"&gt;Wiadomość:&lt;/label&gt;
+  &lt;textarea id="message" name="message" required&gt;&lt;/textarea&gt;
+
+  &lt;button type="submit"&gt;Wyślij&lt;/button&gt;
+  &lt;/form&gt;</code></pre>
+    </div>
+  </div>
+
+  <div>
+    <h3 class="text-xl font-semibold mb-3">3. Przy pierwszym użyciu aktywuj usługę</h3>
+    <p>Gdy wyślesz pierwszą wiadomość przez formularz, zostaniesz przekierowany do strony aktywacji. Podasz swój adres e-mail (na który będą przychodzić wiadomości) i opłacisz subskrypcję.</p>
+  </div>
+
+  <div>
+    <h3 class="text-xl font-semibold mb-3">4. Gotowe!</h3>
+    <p>Od teraz wszystkie wiadomości z formularza trafiają bezpośrednio na Twój adres e-mail.</p>
+  </div>
+</div>
 
 <script>
 function generateUUID() {
@@ -29,45 +70,77 @@ function copyUUID() {
 }
 </script>
 
-<p><strong>2. Dodaj formularz do swojej strony</strong></p>
-<p>Skopiuj poniższy kod HTML i wklej na swoją stronę, zastępując <code>TWOJ-UUID</code> wygenerowanym identyfikatorem:</p>
+<div class="divider my-12"></div>
 
-<pre>&lt;form action="https://mail.selfhosting.pl/submit/TWOJ-UUID" method="POST"&gt;
-  &lt;label for="email"&gt;Twój email:&lt;/label&gt;
-  &lt;input type="email" id="email" name="email" required&gt;
+<h2 class="text-3xl font-bold mb-6">Dlaczego warto?</h2>
 
-  &lt;label for="message"&gt;Wiadomość:&lt;/label&gt;
-  &lt;textarea id="message" name="message" required&gt;&lt;/textarea&gt;
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-12">
+  <div class="card bg-base-200">
+    <div class="card-body">
+      <h3 class="card-title">⚡ Szybka instalacja</h3>
+      <p>Skopiuj kod i wklej na swoją stronę. To wszystko!</p>
+    </div>
+  </div>
 
-  &lt;button type="submit"&gt;Wyślij&lt;/button&gt;
-&lt;/form&gt;</pre>
+  <div class="card bg-base-200">
+    <div class="card-body">
+      <h3 class="card-title">🔒 Bezpieczne</h3>
+      <p>Wszystkie dane są szyfrowane. Płatności przez Stripe.</p>
+    </div>
+  </div>
 
-<p><strong>3. Przy pierwszym użyciu aktywuj usługę</strong></p>
-<p>Gdy ktoś wyśle pierwszą wiadomość przez formularz, zostaniesz przekierowany do strony aktywacji. Podasz swój adres e-mail (na który będą przychodzić wiadomości) i opłacisz subskrypcję.</p>
+  <div class="card bg-base-200">
+    <div class="card-body">
+      <h3 class="card-title">📧 Wiadomości na email</h3>
+      <p>Wszystkie wiadomości trafiają bezpośrednio na Twój adres email.</p>
+    </div>
+  </div>
 
-<p><strong>4. Gotowe!</strong></p>
-<p>Od teraz wszystkie wiadomości z formularza trafiają bezpośrednio na Twój adres e-mail.</p>
+  <div class="card bg-base-200">
+    <div class="card-body">
+      <h3 class="card-title">💰 Przejrzyste zasady</h3>
+      <p>Miesięczna subskrypcja. Anuluj kiedy chcesz.</p>
+    </div>
+  </div>
+</div>
 
-<h3>Zalety</h3>
-<li><strong>Brak własnego serwera</strong> - Wystarczy statyczna strona HTML (GitHub Pages, Netlify, Vercel)</li>
-<li><strong>Proste wdrożenie</strong> - Wystarczy skopiować kod HTML</li>
-<li><strong>Bezpieczne</strong> - Wszystkie połączenia szyfrowane (HTTPS, TLS)</li>
-<li><strong>Prywatność</strong> - Wiadomości nie są przechowywane w naszej bazie danych</li>
-<li><strong>Brak limitów</strong> - Nielimitowana liczba wiadomości i formularzy</li>
-<li><strong>Transparentne</strong> - Miesięczna subskrypcja, brak ukrytych opłat</li>
+<div class="card bg-stripe-light border border-stripe-blue/20 mb-8">
+  <div class="card-body">
+    <h3 class="card-title text-xl">Bezpieczeństwo i prywatność</h3>
+    <p>Twoje dane są bezpieczne. Wiadomości od użytkowników nie są przechowywane w naszej bazie - przetwarzamy je wyłącznie w celu przekazania na Twój adres e-mail.</p>
+    <p>Płatności obsługuje bezpieczny system Stripe. Dane kart nie są przechowywane na naszych serwerach.</p>
+  </div>
+</div>
 
-<h3>Bezpieczeństwo i prywatność</h3>
-<p>Twoje dane są bezpieczne. Wiadomości od użytkowników nie są przechowywane w naszej bazie - przetwarzamy je wyłącznie w celu przekazania na Twój adres e-mail.</p>
-<p>Płatności obsługuje bezpieczny system Stripe. Dane kart nie są przechowywane na naszych serwerach.</p>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
+  <div class="card bg-base-200">
+    <div class="card-body">
+      <h3 class="card-title">Zarządzanie subskrypcją</h3>
+      <p>Masz pełną kontrolę nad swoją subskrypcją. W każdej chwili możesz ją anulować przez panel zarządzania Stripe.</p>
+      <div class="card-actions justify-end mt-2">
+        <a href="/customer-portal" class="btn btn-primary btn-sm">Zarządzaj subskrypcją</a>
+      </div>
+    </div>
+  </div>
 
-<h3>Zarządzanie subskrypcją</h3>
-<p>Masz pełną kontrolę nad swoją subskrypcją. W każdej chwili możesz ją anulować przez <a href="/customer-portal">panel zarządzania Stripe</a>.</p>
-<p>Możesz też zarządzać subskrypcją korzystając z linku, który otrzymasz e-mailem po zakupie.</p>
+  <div class="card bg-base-200">
+    <div class="card-body">
+      <h3 class="card-title">Dokumenty</h3>
+      <p>Zapoznaj się z naszymi dokumentami, aby dowiedzieć się więcej o warunkach świadczenia usługi.</p>
+      <div class="card-actions justify-end mt-2">
+        <a href="/regulamin" class="btn btn-outline btn-sm">Regulamin</a>
+        <a href="/polityka-prywatnosci" class="btn btn-outline btn-sm">Polityka</a>
+      </div>
+    </div>
+  </div>
+</div>
 
-<h3>Dokumenty</h3>
-<p>Zapoznaj się z <a href="/regulamin">Regulaminem</a> i <a href="/polityka-prywatnosci">Polityką Prywatności</a>, aby dowiedzieć się więcej o warunkach świadczenia usługi i ochronie danych osobowych.</p>
-
-<h3>Kontakt</h3>
-<p>Pytania lub problemy? Napisz na: <strong>kacpermachay@gmail.com</strong></p>
+<div class="alert mb-8">
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="stroke-info shrink-0 w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+  <div>
+    <h3 class="font-bold">Pytania lub problemy?</h3>
+    <div class="text-sm">Napisz na: <strong>kacpermachay@gmail.com</strong></div>
+  </div>
+</div>
 
 {{template "partials/footer" .}}
