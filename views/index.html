@@ -1,0 +1,73 @@
+<h1>mail.selfhosting.pl</h1>
+<h2>Prosty serwis do obsługi formularzy kontaktowych</h2>
+
+<p>Dodaj formularz kontaktowy do swojej strony internetowej bez konieczności posiadania własnego serwera backendowego. Idealne rozwiązanie dla statycznych stron internetowych.</p>
+
+<h3>Jak to działa?</h3>
+<p><strong>1. Wygeneruj unikalny identyfikator (UUID)</strong></p>
+<p>
+  <button onclick="generateUUID()">Wygeneruj UUID</button>
+  <input type="text" id="uuid-output" readonly style="width: 300px; margin-left: 10px;">
+  <button onclick="copyUUID()">Kopiuj</button>
+</p>
+
+<script>
+function generateUUID() {
+  const uuid = crypto.randomUUID();
+  document.getElementById('uuid-output').value = uuid;
+}
+
+function copyUUID() {
+  const uuidField = document.getElementById('uuid-output');
+  if (uuidField.value) {
+    uuidField.select();
+    document.execCommand('copy');
+    alert('UUID skopiowany do schowka!');
+  } else {
+    alert('Najpierw wygeneruj UUID');
+  }
+}
+</script>
+
+<p><strong>2. Dodaj formularz do swojej strony</strong></p>
+<p>Skopiuj poniższy kod HTML i wklej na swoją stronę, zastępując <code>TWOJ-UUID</code> wygenerowanym identyfikatorem:</p>
+
+<pre>&lt;form action="https://mail.selfhosting.pl/submit/TWOJ-UUID" method="POST"&gt;
+  &lt;label for="email"&gt;Twój email:&lt;/label&gt;
+  &lt;input type="email" id="email" name="email" required&gt;
+
+  &lt;label for="message"&gt;Wiadomość:&lt;/label&gt;
+  &lt;textarea id="message" name="message" required&gt;&lt;/textarea&gt;
+
+  &lt;button type="submit"&gt;Wyślij&lt;/button&gt;
+&lt;/form&gt;</pre>
+
+<p><strong>3. Przy pierwszym użyciu aktywuj usługę</strong></p>
+<p>Gdy ktoś wyśle pierwszą wiadomość przez formularz, zostaniesz przekierowany do strony aktywacji. Podasz swój adres e-mail (na który będą przychodzić wiadomości) i opłacisz subskrypcję.</p>
+
+<p><strong>4. Gotowe!</strong></p>
+<p>Od teraz wszystkie wiadomości z formularza trafiają bezpośrednio na Twój adres e-mail.</p>
+
+<h3>Zalety</h3>
+<li><strong>Brak własnego serwera</strong> - Wystarczy statyczna strona HTML (GitHub Pages, Netlify, Vercel)</li>
+<li><strong>Proste wdrożenie</strong> - Wystarczy skopiować kod HTML</li>
+<li><strong>Bezpieczne</strong> - Wszystkie połączenia szyfrowane (HTTPS, TLS)</li>
+<li><strong>Prywatność</strong> - Wiadomości nie są przechowywane w naszej bazie danych</li>
+<li><strong>Brak limitów</strong> - Nielimitowana liczba wiadomości i formularzy</li>
+<li><strong>Transparentne</strong> - Miesięczna subskrypcja, brak ukrytych opłat</li>
+
+<h3>Bezpieczeństwo i prywatność</h3>
+<p>Twoje dane są bezpieczne. Wiadomości od użytkowników nie są przechowywane w naszej bazie - przetwarzamy je wyłącznie w celu przekazania na Twój adres e-mail.</p>
+<p>Płatności obsługuje bezpieczny system Stripe. Dane kart nie są przechowywane na naszych serwerach.</p>
+
+<h3>Zarządzanie subskrypcją</h3>
+<p>Masz pełną kontrolę nad swoją subskrypcją. W każdej chwili możesz ją anulować przez <a href="/customer-portal">panel zarządzania Stripe</a>.</p>
+<p>Możesz też zarządzać subskrypcją korzystając z linku, który otrzymasz e-mailem po zakupie.</p>
+
+<h3>Dokumenty</h3>
+<p>Zapoznaj się z <a href="/regulamin">Regulaminem</a> i <a href="/polityka-prywatnosci">Polityką Prywatności</a>, aby dowiedzieć się więcej o warunkach świadczenia usługi i ochronie danych osobowych.</p>
+
+<h3>Kontakt</h3>
+<p>Pytania lub problemy? Napisz na: <strong>kacpermachay@gmail.com</strong></p>
+
+{{template "partials/footer" .}}

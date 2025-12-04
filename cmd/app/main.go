@@ -42,6 +42,7 @@ func main() {
 	app := fiber.New(fiber.Config{Views: engine})
 	app.Use(recover.New())
 
+	app.Get("/", fHandler.Index)
 	app.Post("/submit/:id", fHandler.FormSubmit)
 	app.Get("/add/:id", fHandler.NewForm)
 	app.Post("/add", fHandler.AddForm)
@@ -54,6 +55,8 @@ func main() {
 
 	app.Get("/regulamin", fHandler.Regulamin)
 	app.Get("/polityka-prywatnosci", fHandler.PolitykaPrywatnosci)
+
+	app.Use(fHandler.NotFound)
 
 	log.Fatal(app.Listen(cfg.Server.Port))
 }

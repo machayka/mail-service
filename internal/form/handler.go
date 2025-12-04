@@ -157,3 +157,11 @@ func (h *Handler) Regulamin(c *fiber.Ctx) error {
 func (h *Handler) PolitykaPrywatnosci(c *fiber.Ctx) error {
 	return c.Render("static/polityka-prywatnosci", fiber.Map{})
 }
+
+func (h *Handler) Index(c *fiber.Ctx) error {
+	return c.Render("index", fiber.Map{})
+}
+
+func (h *Handler) NotFound(c *fiber.Ctx) error {
+	return c.Status(fiber.StatusNotFound).Render("404", fiber.Map{})
+}
