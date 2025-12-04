@@ -1,32 +1,43 @@
-<h2 class="text-3xl font-bold mb-4">Uruchom formularz kontaktowy</h2>
-<p>Formularz został wypełniony po raz pierwszy. Najprawdopodobniej oznacza to, że jesteś właścicielem strony internetowej, na której właśnie uruchomiłeś możliwość kontaktu przez formularz. Użytkownicy mogą podawać swój adres e-mail i wysyłać wiadomości, ale aby mechanizm działał poprawnie, potrzebny jest serwer pocztowy, który przetworzy dane z formularza i dostarczy je na właściwy adres.</p>
+<div class="pt-8">
+  <h2 class="text-3xl font-bold mb-6">Uruchom formularz kontaktowy</h2>
 
-<p>Poniżej znajdziesz formularz, w którym wpiszesz adres e-mail, na jaki mają trafiać wiadomości wysyłane z twojej strony.</p>
+  <div class="prose max-w-none mb-6">
+    <p class="mb-4">Formularz został wypełniony po raz pierwszy.</p>
 
-<div class="card bg-base-200 shadow-xl my-6 max-w-lg">
-  <div class="card-body">
-    <form action="/add" method="POST" class="space-y-4">
-      <div class="form-control">
-        <label class="label" for="id">
-          <span class="label-text font-semibold">Identyfikator formularza:</span>
-        </label>
-        <input type="text" id="id" name="id" value="{{.ID}}" readonly class="input input-bordered bg-base-300">
-      </div>
-      <div class="form-control">
-        <label class="label" for="email">
-          <span class="label-text font-semibold">Twój email:</span>
-        </label>
-        <input type="email" id="email" name="email" required class="input input-bordered" placeholder="twoj@email.com">
-      </div>
-      <button type="submit" class="btn btn-primary btn-block">Zapisz i przejdź do płatności</button>
-    </form>
+    <p class="mb-6">Poniżej znajdziesz formularz, w którym wpiszesz adres e-mail, na jaki mają trafiać wiadomości wysyłane z twojej strony.</p>
   </div>
-</div> 
 
-<p>Po kliknięciu „Zapisz” zostaniesz przekierowany do bezpiecznej strony płatności Stripe. Po opłaceniu subskrypcji funkcja kontaktu przez formularz zostanie aktywowana.</p>
-<p>W każdej chwili możesz zrezygnować z subskrypcji poprzez:</p>
-<li>link do zarządzania subskrypcją, który otrzymasz e-mailem po zakupie, lub</li>
-<li>kontakt mailowy na: kacpermachay@gmail.com.</li>
-<p>Szczegóły dotyczące świadczenia usługi, zasad płatności i rezygnacji znajdziesz w <a href="/regulamin">Regulaminie</a>.</p>
+  <div class="card bg-base-200 shadow-xl my-8 max-w-lg mx-auto">
+    <div class="card-body">
+      <form action="/add" method="POST" class="space-y-4">
+        <div class="form-control">
+          <label class="label" for="id">
+            <span class="label-text font-semibold">Identyfikator formularza:</span>
+          </label>
+          <input type="text" id="id" name="id" value="{{.ID}}" readonly class="input input-bordered bg-base-300">
+        </div>
+        <div class="form-control">
+          <label class="label" for="email">
+            <span class="label-text font-semibold">Email, na który mają trafiać wiadomości:</span>
+          </label>
+          <input type="email" id="email" name="email" required class="input input-bordered" placeholder="twoj@email.com">
+        </div>
+        <button type="submit" class="btn btn-primary btn-block">Zapisz i przejdź do płatności</button>
+      </form>
+    </div>
+  </div>
+
+  <div class="prose max-w-none mt-8">
+    <p class="mb-4">Po kliknięciu „Zapisz" zostaniesz przekierowany do bezpiecznej strony płatności Stripe. Po opłaceniu subskrypcji funkcja kontaktu przez formularz zostanie aktywowana.</p>
+
+    <p class="mb-2">W każdej chwili możesz zrezygnować z subskrypcji poprzez:</p>
+    <ul class="list-disc list-inside ml-4 mb-4 space-y-1">
+      <li>link do zarządzania subskrypcją (<a href="/customer-portal">/customer-portal</a>), lub</li>
+      <li>kontakt mailowy na: kacpermachay@gmail.com.</li>
+    </ul>
+
+    <p>Szczegóły dotyczące świadczenia usługi, zasad płatności i rezygnacji znajdziesz w <a href="/regulamin" class="link link-primary">Regulaminie</a>.</p>
+  </div>
+</div>
 
 {{template "partials/footer" .}}
