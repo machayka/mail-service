@@ -32,6 +32,7 @@ type Config struct {
 		PriceID       string `env:"PRICE_ID,required"`
 		Domain        string `env:"DOMAIN,required"`
 		WebhookSecret string `env:"WEBHOOK_SECRET,required"`
+		PortalLink    string `env:"PORTAL_LINK,required"`
 	}
 }
 

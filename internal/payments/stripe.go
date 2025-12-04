@@ -54,7 +54,7 @@ func (p Payment) CreatePayment(customerID, formID string) (checkoutURL string, e
 		},
 		Customer:   stripe.String(customerID),
 		Mode:       stripe.String(string(stripe.CheckoutSessionModeSubscription)),
-		SuccessURL: stripe.String(p.domain + "/success"),
+		SuccessURL: stripe.String(p.domain + "/success.html"),
 	}
 	params.AddMetadata("form_id", formID)
 	result, err := session.New(params)

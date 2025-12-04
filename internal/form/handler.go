@@ -37,8 +37,7 @@ func (h *Handler) FormSubmit(c *fiber.Ctx) error {
 		return err
 	}
 
-	// TODO: Tutaj zwrócimy success.html z elegancką informacją
-	return c.SendString("Wiadomość przesłana")
+	return c.Render("static/submitted", fiber.Map{})
 }
 
 func (h *Handler) NewForm(c *fiber.Ctx) error {
@@ -61,8 +60,14 @@ func (h *Handler) AddForm(c *fiber.Ctx) error {
 }
 
 func (h *Handler) PaymentSuccess(c *fiber.Ctx) error {
-	// TODO: 	Tu bym chciał zwrócić customer manage portal link
-	return c.Render("add-form-success", fiber.Map{"stripeUrl": "https://link.com"})
+	return c.Render("static/success", fiber.Map{})
+}
+
+func (h *Handler) CustomerPortal(redirect string) fiber.Handler {
+	// inny link jest dla produkcji a inny dla testu
+	return func(c *fiber.Ctx) error {
+		return c.Redirect(redirect)
+	}
 }
 
 func (h *Handler) HandleWebhook(cfg *config.Config) fiber.Handler {
@@ -143,4 +148,12 @@ func getSubscriptionIDFromStripe(event stripe.Event) (string, error) {
 		return "", err
 	}
 	return subscription.ID, nil
+}
+
+func (h *Handler) Regulamin(c *fiber.Ctx) error {
+	return c.Render("static/regulamin", fiber.Map{})
+}
+
+func (h *Handler) PolitykaPrywatnosci(c *fiber.Ctx) error {
+	return c.Render("static/polityka-prywatnosci", fiber.Map{})
 }

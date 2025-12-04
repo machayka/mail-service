@@ -1,0 +1,113 @@
+<h2>Regulamin świadczenia usługi</h2>
+
+<h3>1. Postanowienia ogólne</h3>
+<p>Niniejszy regulamin określa zasady świadczenia usługi pośredniczenia w dostarczaniu wiadomości z formularzy kontaktowych, dostępnej pod adresem mail.selfhosting.pl.</p>
+<p>Usługodawca: Kacper Machaj, kontakt: kacpermachay@gmail.com</p>
+<p>Usługobiorca: osoba fizyczna, prawna lub jednostka organizacyjna nieposiadająca osobowości prawnej, korzystająca z Usługi.</p>
+
+<h3>2. Opis usługi</h3>
+<p>Usługa polega na odbiorze danych przesłanych przez użytkowników końcowych za pośrednictwem formularzy kontaktowych umieszczonych na stronach internetowych Usługobiorców oraz przekazaniu tych danych na wskazany przez Usługobiorcę adres e-mail.</p>
+<p>Usługa nie obejmuje hostingu stron internetowych, zarządzania treścią formularzy ani moderacji przesyłanych wiadomości.</p>
+
+<h3>3. Warunki korzystania z usługi</h3>
+<p>Korzystanie z Usługi wymaga:</p>
+<li>Podania przez Usługobiorcę adresu e-mail, na który mają być przekazywane wiadomości</li>
+<li>Wygenerowania unikalnego identyfikatora formularza (UUID)</li>
+<li>Opłacenia subskrypcji za pośrednictwem systemu płatności Stripe</li>
+<p>Aktywacja Usługi następuje automatycznie po pozytywnej weryfikacji płatności przez system Stripe, zazwyczaj w ciągu kilku minut od dokonania płatności.</p>
+
+<h3>4. Model subskrypcji i płatności</h3>
+<p>Usługa świadczona jest w modelu subskrypcji odnawialnej automatycznie co miesiąc.</p>
+<p>Aktualną cenę subskrypcji oraz dostępne plany cenowe można znaleźć na stronie płatności w systemie Stripe podczas procesu zakupu.</p>
+<p>Płatności przetwarzane są wyłącznie przez zewnętrzny system Stripe. Usługodawca nie przechowuje danych kart płatniczych.</p>
+<p>Subskrypcja odnawia się automatycznie z końcem każdego okresu rozliczeniowego, chyba że Usługobiorca anuluje subskrypcję przed tym terminem.</p>
+
+<h3>5. Limity i ograniczenia</h3>
+<p>W ramach jednej subskrypcji Usługobiorca może korzystać z nieograniczonej liczby formularzy kontaktowych.</p>
+<p>Liczba wiadomości przesyłanych przez formularze nie jest ograniczona, pod warunkiem korzystania z Usługi w sposób zgodny z jej przeznaczeniem.</p>
+<p>Usługodawca zastrzega sobie prawo do wprowadzenia ograniczeń lub zawieszenia świadczenia Usługi w przypadku:</p>
+<li>Nadużyć polegających na generowaniu nienaturalnie wysokiego ruchu (np. spam, ataki automatyczne)</li>
+<li>Korzystania z Usługi w sposób naruszający przepisy prawa lub dobre obyczaje</li>
+<li>Zagrożenia dla bezpieczeństwa lub stabilności infrastruktury technicznej</li>
+<p>W powyższych przypadkach Usługodawca podejmie próbę kontaktu z Usługobiorcą przed wprowadzeniem ograniczeń.</p>
+
+<h3>6. Prawo odstąpienia od umowy i zwroty</h3>
+<p>Konsument w rozumieniu przepisów Kodeksu cywilnego ma prawo odstąpić od umowy w terminie 14 dni od dnia jej zawarcia (opłacenia subskrypcji) bez podawania przyczyny.</p>
+<p>Oświadczenie o odstąpieniu należy przesłać na adres: kacpermachay@gmail.com</p>
+<p>W przypadku skutecznego odstąpienia od umowy, Usługodawca zwróci wszystkie otrzymane płatności niezwłocznie, nie później niż w terminie 14 dni od dnia otrzymania oświadczenia o odstąpieniu.</p>
+<p>Zwrot płatności zostanie dokonany przy użyciu takich samych metod płatności, jakie zostały przez Usługobiorcę użyte w pierwotnej transakcji, chyba że Usługobiorca wyraźnie zgodził się na inne rozwiązanie.</p>
+<p>Prawo odstąpienia nie przysługuje, jeżeli Usługobiorca, będący konsumentem, wyraźnie zażądał rozpoczęcia świadczenia usługi przed upływem 14-dniowego terminu i Usługa została w pełni wykonana.</p>
+
+<h3>7. Rezygnacja z subskrypcji</h3>
+<p>Usługobiorca może w każdej chwili anulować subskrypcję poprzez:</p>
+<li>Portal zarządzania subskrypcją Stripe dostępny pod adresem <a href="/customer-portal">/customer-portal</a></li>
+<li>Kontakt e-mailowy z Usługodawcą: kacpermachay@gmail.com</li>
+<p>Anulowanie subskrypcji powoduje zaprzestanie jej automatycznego odnawiania. Usługa pozostaje aktywna do końca opłaconego okresu rozliczeniowego.</p>
+<p>Po zakończeniu opłaconego okresu rozliczeniowego:</p>
+<li>Usługa przestaje być świadczona</li>
+<li>Dane formularza (identyfikator, adres e-mail, informacje o subskrypcji) są automatycznie i nieodwracalnie usuwane z bazy danych Usługodawcy</li>
+<li>Wiadomości przesłane przez formularze kontaktowe przestają być przetwarzane</li>
+<p>Usunięcie danych jest procesem automatycznym i następuje w ciągu kilku minut od wygaśnięcia subskrypcji. Proces ten jest nieodwracalny i nie ma możliwości odzyskania usuniętych danych.</p>
+
+<h3>8. Przetwarzanie danych osobowych</h3>
+<p>Administratorem danych osobowych jest Kacper Machaj, kacpermachay@gmail.com</p>
+<p>W ramach świadczenia Usługi przetwarzane są następujące dane:</p>
+<li>Dane Usługobiorcy: adres e-mail, identyfikator klienta w systemie Stripe, identyfikator subskrypcji</li>
+<li>Dane użytkowników końcowych wypełniających formularze: adres e-mail i treść wiadomości (przetwarzane wyłącznie w celu przekazania na adres e-mail Usługobiorcy, nie są przechowywane w bazie danych)</li>
+<p>Podstawa prawna przetwarzania:</p>
+<li>Art. 6 ust. 1 lit. b RODO (wykonanie umowy) - dla danych Usługobiorcy</li>
+<li>Art. 6 ust. 1 lit. f RODO (prawnie uzasadniony interes) - dla danych użytkowników końcowych, polegający na umożliwieniu kontaktu przez formularz</li>
+<p>Dane Usługobiorcy są przechowywane przez czas trwania subskrypcji i usuwane automatycznie po jej zakończeniu.</p>
+<p>Dane przekazywane są następującym odbiorcom:</p>
+<li>Stripe Inc. - procesor płatności</li>
+<li>Google LLC (Gmail/SMTP) - dostawca usług wysyłki e-mail</li>
+<p>Usługobiorca ma prawo do:</p>
+<li>Dostępu do swoich danych</li>
+<li>Sprostowania danych</li>
+<li>Usunięcia danych (realizowane poprzez anulowanie subskrypcji)</li>
+<li>Ograniczenia przetwarzania</li>
+<li>Przenoszenia danych</li>
+<li>Wniesienia sprzeciwu wobec przetwarzania</li>
+<li>Wniesienia skargi do organu nadzorczego (Prezes Urzędu Ochrony Danych Osobowych)</li>
+<p>Szczegółowe informacje dotyczące przetwarzania danych osobowych znajdują się w <a href="/polityka-prywatnosci">Polityce Prywatności</a>.</p>
+
+<h3>9. Odpowiedzialność Usługodawcy</h3>
+<p>Usługodawca dołoży starań, aby Usługa była świadczona w sposób ciągły i niezawodny, jednak nie gwarantuje stuprocentowej dostępności Usługi.</p>
+<p>Usługodawca nie ponosi odpowiedzialności za:</p>
+<li>Przerwy w świadczeniu Usługi spowodowane przyczynami niezależnymi od Usługodawcy (awarie dostawców zewnętrznych, infrastruktury internetowej, siła wyższa)</li>
+<li>Treść wiadomości przesyłanych przez użytkowników końcowych za pośrednictwem formularzy</li>
+<li>Skutki wykorzystania Usługi w sposób niezgodny z jej przeznaczeniem lub przepisami prawa</li>
+<li>Utratę danych wynikającą z anulowania subskrypcji lub naruszenia regulaminu</li>
+<li>Nieotrzymanie wiadomości spowodowane błędną konfiguracją skrzynki pocztowej Usługobiorcy, filtrowaniem przez serwery pocztowe, lub klasyfikacją jako spam</li>
+<p>Usługodawca nie ponosi odpowiedzialności za działania użytkowników końcowych wypełniających formularze, w tym za przesyłanie przez nich treści naruszających przepisy prawa, dobre obyczaje lub prawa osób trzecich.</p>
+<p>Usługobiorca ponosi wyłączną odpowiedzialność za:</p>
+<li>Zgodność formularzy kontaktowych umieszczonych na swojej stronie internetowej z przepisami prawa, w tym z RODO</li>
+<li>Zamieszczenie odpowiednich klauzul informacyjnych i uzyskanie zgód wymaganych prawem</li>
+<li>Treści publikowane na swojej stronie internetowej</li>
+
+<h3>10. Bezpieczeństwo</h3>
+<p>Usługodawca stosuje odpowiednie środki techniczne i organizacyjne zapewniające bezpieczeństwo przetwarzanych danych, w tym:</p>
+<li>Szyfrowanie połączeń (HTTPS, TLS)</li>
+<li>Zabezpieczenia bazy danych</li>
+<li>Weryfikację autentyczności webhooków od systemu Stripe</li>
+
+<h3>11. Zmiany w regulaminie</h3>
+<p>Usługodawca zastrzega sobie prawo do wprowadzania zmian w Regulaminie z ważnych przyczyn, w tym:</p>
+<li>Zmiany przepisów prawa</li>
+<li>Zmiany funkcjonalności Usługi</li>
+<li>Zmiany warunków współpracy z dostawcami zewnętrznymi</li>
+<li>Względy bezpieczeństwa lub techniczne</li>
+<p>O planowanych zmianach Usługobiorca zostanie poinformowany drogą elektroniczną na adres e-mail wskazany podczas rejestracji, z co najmniej 30-dniowym wyprzedzeniem.</p>
+<p>Kontynuowanie korzystania z Usługi po wejściu w życie zmian oznacza akceptację nowego Regulaminu. W przypadku braku akceptacji zmian, Usługobiorca może anulować subskrypcję zgodnie z punktem 7 Regulaminu.</p>
+
+<h3>12. Postanowienia końcowe</h3>
+<p>W sprawach nieuregulowanych niniejszym Regulaminem zastosowanie mają przepisy prawa polskiego, w szczególności:</p>
+<li>Ustawa z dnia 23 kwietnia 1964 r. Kodeks cywilny</li>
+<li>Ustawa z dnia 18 lipca 2002 r. o świadczeniu usług drogą elektroniczną</li>
+<li>Rozporządzenie Parlamentu Europejskiego i Rady (UE) 2016/679 (RODO)</li>
+<p>Wszelkie spory wynikłe w związku ze świadczeniem Usługi będą rozstrzygane przez sąd właściwy dla siedziby Usługodawcy, z zastrzeżeniem bezwzględnie obowiązujących przepisów o właściwości sądów w sprawach konsumenckich.</p>
+<p>W przypadku konsumentów, w sprawach nieuregulowanych w Regulaminie można skorzystać z pozasądowych sposobów rozpatrywania reklamacji i dochodzenia roszczeń. Informacje dostępne na stronie: <a href="https://www.uokik.gov.pl">https://www.uokik.gov.pl</a></p>
+<p>Kontakt w sprawach Regulaminu i Usługi: kacpermachay@gmail.com</p>
+<p>Regulamin wchodzi w życie z dniem publikacji.</p>
+
+{{template "partials/footer" .}}

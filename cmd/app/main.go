@@ -46,9 +46,14 @@ func main() {
 	app.Get("/add/:id", fHandler.NewForm)
 	app.Post("/add", fHandler.AddForm)
 
-	// TODO: to ":id" jest dla No Code customer portal: https://docs.stripe.com/customer-management/activate-no-code-customer-portal
-	app.Get("/success/:id", fHandler.PaymentSuccess)
+	app.Get("/success", fHandler.PaymentSuccess)
+
+	app.Get("/customer-portal", fHandler.CustomerPortal(cfg.Stripe.PortalLink))
+
 	app.Post("/webhook", fHandler.HandleWebhook(cfg))
+
+	app.Get("/regulamin", fHandler.Regulamin)
+	app.Get("/polityka-prywatnosci", fHandler.PolitykaPrywatnosci)
 
 	log.Fatal(app.Listen(cfg.Server.Port))
 }
