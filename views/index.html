@@ -30,15 +30,15 @@
     <p class="mb-4">Skopiuj poniższy kod HTML i wklej na swoją stronę, zastępując <code>TWOJ-UUID</code> wygenerowanym identyfikatorem:</p>
 
     <div class="mockup-code w-full">
-<pre><code>&lt;form action="https://mail.selfhosting.pl/submit/TWOJ-UUID" method="POST"&gt;
-  &lt;label for="email"&gt;Twój email:&lt;/label&gt;
-  &lt;input type="email" id="email" name="email" required&gt;
+<pre><code id="code-snippet"><span class="text-gray-400">&lt;</span><span class="text-purple-400">form</span> <span class="text-sky-400">action</span><span class="text-gray-400">=</span><span class="text-green-400">"https://mail.selfhosting.pl/submit/<span id="uuid-in-code">TWOJ-UUID</span>"</span> <span class="text-sky-400">method</span><span class="text-gray-400">=</span><span class="text-green-400">"POST"</span><span class="text-gray-400">&gt;</span>
+  <span class="text-gray-400">&lt;</span><span class="text-purple-400">label</span> <span class="text-sky-400">for</span><span class="text-gray-400">=</span><span class="text-green-400">"email"</span><span class="text-gray-400">&gt;</span>Twój email:<span class="text-gray-400">&lt;/</span><span class="text-purple-400">label</span><span class="text-gray-400">&gt;</span>
+  <span class="text-gray-400">&lt;</span><span class="text-purple-400">input</span> <span class="text-sky-400">type</span><span class="text-gray-400">=</span><span class="text-green-400">"email"</span> <span class="text-sky-400">id</span><span class="text-gray-400">=</span><span class="text-green-400">"email"</span> <span class="text-sky-400">name</span><span class="text-gray-400">=</span><span class="text-green-400">"email"</span> <span class="text-sky-400">required</span><span class="text-gray-400">&gt;</span>
 
-  &lt;label for="message"&gt;Wiadomość:&lt;/label&gt;
-  &lt;textarea id="message" name="message" required&gt;&lt;/textarea&gt;
+  <span class="text-gray-400">&lt;</span><span class="text-purple-400">label</span> <span class="text-sky-400">for</span><span class="text-gray-400">=</span><span class="text-green-400">"message"</span><span class="text-gray-400">&gt;</span>Wiadomość:<span class="text-gray-400">&lt;/</span><span class="text-purple-400">label</span><span class="text-gray-400">&gt;</span>
+  <span class="text-gray-400">&lt;</span><span class="text-purple-400">textarea</span> <span class="text-sky-400">id</span><span class="text-gray-400">=</span><span class="text-green-400">"message"</span> <span class="text-sky-400">name</span><span class="text-gray-400">=</span><span class="text-green-400">"message"</span> <span class="text-sky-400">required</span><span class="text-gray-400">&gt;&lt;/</span><span class="text-purple-400">textarea</span><span class="text-gray-400">&gt;</span>
 
-  &lt;button type="submit"&gt;Wyślij&lt;/button&gt;
-  &lt;/form&gt;</code></pre>
+  <span class="text-gray-400">&lt;</span><span class="text-purple-400">button</span> <span class="text-sky-400">type</span><span class="text-gray-400">=</span><span class="text-green-400">"submit"</span><span class="text-gray-400">&gt;</span>Wyślij<span class="text-gray-400">&lt;/</span><span class="text-purple-400">button</span><span class="text-gray-400">&gt;</span>
+  <span class="text-gray-400">&lt;/</span><span class="text-purple-400">form</span><span class="text-gray-400">&gt;</span></code></pre>
     </div>
   </div>
 
@@ -57,6 +57,12 @@
 function generateUUID() {
   const uuid = crypto.randomUUID();
   document.getElementById('uuid-output').value = uuid;
+
+  // Aktualizuj UUID w kodzie (używamy getElementById dla konkretnego spana)
+  const uuidInCode = document.getElementById('uuid-in-code');
+  if (uuidInCode) {
+    uuidInCode.textContent = uuid;
+  }
 }
 
 function copyUUID() {
