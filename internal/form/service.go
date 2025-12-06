@@ -47,11 +47,8 @@ func (s *Service) CreateCheckout(f *Form) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	if err = s.repo.CreateNewForm(f, customerID); err != nil {
-		return "", err
-	}
 
-	checkoutURL, err := s.paymentClient.CreatePayment(customerID, f.ID.String())
+	checkoutURL, err := s.paymentClient.CreatePayment(customerID, f.ID.String(), f.Email)
 	if err != nil {
 		return "", err
 	}

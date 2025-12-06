@@ -96,9 +96,12 @@ func (h *Handler) HandleWebhook(cfg *config.Config) fiber.Handler {
 			}
 
 			formID := session.Metadata["form_id"]
-			if formID == "" {
-				log.Println("Missing form_id in metadata")
-				return c.Status(fiber.StatusBadRequest).SendString("Missing form_id")
+			email := session.Metadata["email"]
+			customerID := session.Customer.ID
+
+			if formID == "" || email == "" || customerID == "" {
+				log.Println("Missing form_id, email or customerID in metadata")
+				return c.Status(fiber.StatusBadRequest).SendString("Missing metadata")
 			}
 
 			subscriptionID := session.Subscription.ID
@@ -106,23 +109,12 @@ func (h *Handler) HandleWebhook(cfg *config.Config) fiber.Handler {
 				return c.Status(fiber.StatusBadRequest).SendString("Missing subscription ID")
 			}
 
-			err = h.service.repo.UpdateSubscriptionID(formID, subscriptionID)
+			err = h.service.repo.CreateNewForm(formID, email, customerID, subscriptionID)
 			if err != nil {
-				log.Println("Error updating subscription ID:", err)
+				log.Println("Error creating form:", err)
 				return err
 			}
 
-		case "customer.subscription.created":
-			subscriptionID, err := getSubscriptionIDFromStripe(event)
-			if err != nil {
-				log.Println(err)
-				return err
-			}
-			err = h.service.repo.ChangePaymentStatus(subscriptionID, true)
-			if err != nil {
-				log.Println(err)
-				return err
-			}
 		case "customer.subscription.deleted":
 			subscriptionID, err := getSubscriptionIDFromStripe(event)
 			if err != nil {

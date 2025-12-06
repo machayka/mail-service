@@ -34,9 +34,8 @@ func (r *Repository) GetByID(id string) (*Form, error) {
 	return &form, err
 }
 
-func (r *Repository) CreateNewForm(form *Form, customerID string) error {
-	err := r.db.QueryRow("INSERT INTO forms (id, email, stripe_customer_id) VALUES ($1, $2, $3) RETURNING id, email",
-		form.ID, form.Email, customerID).Scan(&form.ID, &form.Email)
+func (r *Repository) CreateNewForm(formID, email, customerID, subscriptionID string) error {
+	_, err := r.db.Exec("INSERT INTO forms (id, email, stripe_customer_id, stripe_subscription_id) VALUES ($1, $2, $3, $4)", formID, email, customerID, subscriptionID)
 	if err != nil {
 		var pqErr *pq.Error
 		if errors.As(err, &pqErr) {
@@ -52,16 +51,6 @@ func (r *Repository) GetStripeCustomerID(email string) (string, error) {
 	var stripeCustomerID string
 	err := r.db.QueryRow("SELECT stripe_customer_id FROM forms WHERE email = $1", email).Scan(&stripeCustomerID)
 	return stripeCustomerID, err
-}
-
-func (r *Repository) ChangePaymentStatus(id string, isPaid bool) error {
-	_, err := r.db.Exec("UPDATE forms SET is_paid = $1 WHERE stripe_subscription_id = $2", isPaid, id)
-	return err
-}
-
-func (r *Repository) UpdateSubscriptionID(formID, subscriptionID string) error {
-	_, err := r.db.Exec("UPDATE forms SET stripe_subscription_id = $1, is_paid = true WHERE id = $2", subscriptionID, formID)
-	return err
 }
 
 func (r *Repository) DeleteForm(subscriptionID string) error {
