@@ -36,8 +36,8 @@ func (r *Repository) GetByID(id string) (*Form, error) {
 	return &form, err
 }
 
-func (r *Repository) CreateNewForm(formID, email, customerID, subscriptionID string) error {
-	_, err := r.db.Exec("INSERT INTO forms (id, email, stripe_customer_id, stripe_subscription_id) VALUES ($1, $2, $3, $4)", formID, email, customerID, subscriptionID)
+func (r *Repository) CreateNewForm(formID, email, subscriptionID string) error {
+	_, err := r.db.Exec("INSERT INTO forms (id, email, stripe_subscription_id) VALUES ($1, $2, $3)", formID, email, subscriptionID)
 	if err != nil {
 		var pqErr *pq.Error
 		if errors.As(err, &pqErr) {
@@ -49,9 +49,17 @@ func (r *Repository) CreateNewForm(formID, email, customerID, subscriptionID str
 	return err
 }
 
+func (r *Repository) CreateCustomer(email, customerID string) error {
+	_, err := r.db.Exec(
+		"INSERT INTO customers (email, stripe_customer_id) VALUES ($1, $2) ON CONFLICT (email) DO NOTHING",
+		email, customerID,
+	)
+	return err
+}
+
 func (r *Repository) GetStripeCustomerID(email string) (string, error) {
 	var stripeCustomerID string
-	err := r.db.QueryRow("SELECT stripe_customer_id FROM forms WHERE email = $1", email).Scan(&stripeCustomerID)
+	err := r.db.QueryRow("SELECT stripe_customer_id FROM customers WHERE email = $1", email).Scan(&stripeCustomerID)
 	return stripeCustomerID, err
 }
 

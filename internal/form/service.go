@@ -43,8 +43,11 @@ func (s *Service) CreateCheckout(f *Form) (string, error) {
 		if err != nil {
 			return "", err
 		}
-	}
-	if err != nil {
+		err = s.repo.CreateCustomer(f.Email, customerID)
+		if err != nil {
+			return "", err
+		}
+	} else if err != nil {
 		return "", err
 	}
 
@@ -64,7 +67,7 @@ func (s *Service) HandleCheckoutCompleted(formID, email, customerID, subscriptio
 		return ErrMissingSubscriptionID
 	}
 
-	return s.repo.CreateNewForm(formID, email, customerID, subscriptionID)
+	return s.repo.CreateNewForm(formID, email, subscriptionID)
 }
 
 func (s *Service) HandleSubscriptionDeleted(subscriptionID string) error {
