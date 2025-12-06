@@ -55,3 +55,21 @@ func (s *Service) CreateCheckout(f *Form) (string, error) {
 
 	return checkoutURL, err
 }
+
+func (s *Service) HandleCheckoutCompleted(formID, email, customerID, subscriptionID string) error {
+	if formID == "" || email == "" || customerID == "" {
+		return ErrMissingMetadata
+	}
+	if subscriptionID == "" {
+		return ErrMissingSubscriptionID
+	}
+
+	return s.repo.CreateNewForm(formID, email, customerID, subscriptionID)
+}
+
+func (s *Service) HandleSubscriptionDeleted(subscriptionID string) error {
+	if subscriptionID == "" {
+		return ErrMissingSubscriptionID
+	}
+	return s.repo.DeleteForm(subscriptionID)
+}

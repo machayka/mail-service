@@ -5,12 +5,16 @@ import (
 	"encoding/json"
 	"fmt"
 	"log"
-	"os"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/machayka/mail-service/config"
 	"github.com/stripe/stripe-go/v84"
 	"github.com/stripe/stripe-go/v84/webhook"
+)
+
+const (
+	stripeEventCheckoutCompleted   = "checkout.session.completed"
+	stripeEventSubscriptionDeleted = "customer.subscription.deleted"
 )
 
 type Handler struct {
@@ -76,52 +80,22 @@ func (h *Handler) HandleWebhook(cfg *config.Config) fiber.Handler {
 
 		const MaxBodyBytes = int64(65536)
 		if len(payload) > int(MaxBodyBytes) {
-			return c.Status(fiber.StatusRequestEntityTooLarge).SendString("Too large")
+			return c.Status(fiber.StatusRequestEntityTooLarge).SendString("Payload too large")
 		}
 
-		signatureHeader := c.Get("Stripe-Signature")
-		endpointSecret := cfg.Stripe.WebhookSecret
-		event, err := webhook.ConstructEvent(payload, signatureHeader, endpointSecret)
+		event, err := webhook.ConstructEvent(payload, c.Get("Stripe-Signature"), cfg.Stripe.WebhookSecret)
 		if err != nil {
+			log.Println("Webhook signature verification failed:", err)
 			return c.Status(fiber.StatusBadRequest).SendString("Invalid signature")
 		}
 
 		switch event.Type {
-		case "checkout.session.completed":
-			var session stripe.CheckoutSession
-			err := json.Unmarshal(event.Data.Raw, &session)
-			if err != nil {
-				log.Println("Error parsing checkout session:", err)
+		case stripeEventCheckoutCompleted:
+			if err := h.handleCheckoutCompleted(c, event); err != nil {
 				return err
 			}
-
-			formID := session.Metadata["form_id"]
-			email := session.Metadata["email"]
-			customerID := session.Customer.ID
-
-			if formID == "" || email == "" || customerID == "" {
-				log.Println("Missing form_id, email or customerID in metadata")
-				return c.Status(fiber.StatusBadRequest).SendString("Missing metadata")
-			}
-
-			subscriptionID := session.Subscription.ID
-			if subscriptionID == "" {
-				return c.Status(fiber.StatusBadRequest).SendString("Missing subscription ID")
-			}
-
-			err = h.service.repo.CreateNewForm(formID, email, customerID, subscriptionID)
-			if err != nil {
-				log.Println("Error creating form:", err)
-				return err
-			}
-
-		case "customer.subscription.deleted":
-			subscriptionID, err := getSubscriptionIDFromStripe(event)
-			if err != nil {
-				return err
-			}
-			err = h.service.repo.DeleteForm(subscriptionID)
-			if err != nil {
+		case stripeEventSubscriptionDeleted:
+			if err := h.handleSubscriptionDeleted(c, event); err != nil {
 				return err
 			}
 		default:
@@ -132,14 +106,41 @@ func (h *Handler) HandleWebhook(cfg *config.Config) fiber.Handler {
 	}
 }
 
-func getSubscriptionIDFromStripe(event stripe.Event) (string, error) {
-	var subscription stripe.Subscription
-	err := json.Unmarshal(event.Data.Raw, &subscription)
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error parsing webhook JSON: %v\n", err)
-		return "", err
+func (h *Handler) handleCheckoutCompleted(c *fiber.Ctx, event stripe.Event) error {
+	var session stripe.CheckoutSession
+	if err := json.Unmarshal(event.Data.Raw, &session); err != nil {
+		log.Println("Error parsing checkout session:", err)
+		return c.Status(fiber.StatusBadRequest).SendString("Invalid session data")
 	}
-	return subscription.ID, nil
+
+	formID := session.Metadata["form_id"]
+	email := session.Metadata["email"]
+	customerID := session.Customer.ID
+	subscriptionID := session.Subscription.ID
+
+	err := h.service.HandleCheckoutCompleted(formID, email, customerID, subscriptionID)
+	if err != nil {
+		log.Println("Error handling checkout completed:", err)
+		return c.Status(fiber.StatusInternalServerError).SendString(err.Error())
+	}
+
+	return nil
+}
+
+func (h *Handler) handleSubscriptionDeleted(c *fiber.Ctx, event stripe.Event) error {
+	var subscription stripe.Subscription
+	if err := json.Unmarshal(event.Data.Raw, &subscription); err != nil {
+		log.Println("Error parsing subscription:", err)
+		return c.Status(fiber.StatusBadRequest).SendString("Invalid subscription data")
+	}
+
+	err := h.service.HandleSubscriptionDeleted(subscription.ID)
+	if err != nil {
+		log.Println("Error handling subscription deleted:", err)
+		return c.Status(fiber.StatusInternalServerError).SendString(err.Error())
+	}
+
+	return nil
 }
 
 func (h *Handler) Regulamin(c *fiber.Ctx) error {

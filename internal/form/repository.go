@@ -9,8 +9,10 @@ import (
 )
 
 var (
-	ErrNotFound          = errors.New("not found")
-	ErrFormAlreadyExists = errors.New("uuid already in database")
+	ErrNotFound              = errors.New("not found")
+	ErrFormAlreadyExists     = errors.New("uuid already in database")
+	ErrMissingMetadata       = errors.New("missing required metadata")
+	ErrMissingSubscriptionID = errors.New("missing subscription ID")
 )
 
 type Repository struct {
