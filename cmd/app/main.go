@@ -45,6 +45,8 @@ func main() {
 	})
 	app.Use(recover.New())
 
+	app.Static("/", "./public")
+
 	app.Get("/", fHandler.Index)
 	app.Post("/submit/:id", fHandler.FormSubmit)
 	app.Get("/add/:id", fHandler.NewForm)

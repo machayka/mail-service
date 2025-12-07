@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+Disallow: /customer-portal
+Sitemap: https://mail.selfhosting.pl/sitemap.xml

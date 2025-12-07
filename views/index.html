@@ -1,8 +1,8 @@
 <div class="hero bg-gradient-to-br from-base-200 via-base-100 to-base-200 shadow-lg mb-12 py-16" style="margin-left: calc(-50vw + 50%); margin-right: calc(-50vw + 50%); width: 100vw;">
   <div class="hero-content text-center w-full px-4">
     <div class="max-w-4xl w-full mx-auto">
-      <h1 class="text-3xl sm:text-4xl md:text-5xl font-bold mb-4">mail.selfhosting.pl</h1>
-      <p class="text-lg sm:text-xl mb-6">Prosty formularz kontaktowy dla Twojej strony internetowej</p>
+      <h1 class="text-3xl sm:text-4xl md:text-5xl font-bold mb-4">Formularz Kontaktowy HTML dla Twojej Strony</h1>
+      <p class="text-lg sm:text-xl mb-6">Prosty serwis email dla formularzy kontaktowych</p>
       <div class="flex gap-2 justify-center flex-wrap">
         <span class="badge badge-lg badge-primary">Szybka instalacja</span>
         <span class="badge badge-lg badge-primary">Bezpieczne</span>
@@ -150,5 +150,50 @@ function copyUUID() {
   </div>
 </div>
 </div>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebSite",
+      "@id": "https://mail.selfhosting.pl/#website",
+      "url": "https://mail.selfhosting.pl",
+      "name": "mail.selfhosting.pl",
+      "description": "Prosty serwis do obsługi formularzy kontaktowych",
+      "publisher": {
+        "@id": "https://mail.selfhosting.pl/#organization"
+      }
+    },
+    {
+      "@type": "Organization",
+      "@id": "https://mail.selfhosting.pl/#organization",
+      "name": "mail.selfhosting.pl",
+      "url": "https://mail.selfhosting.pl",
+      "email": "kacpermachay@gmail.com",
+      "description": "Serwis do obsługi formularzy kontaktowych dla statycznych stron internetowych"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "name": "mail.selfhosting.pl",
+      "applicationCategory": "WebApplication",
+      "operatingSystem": "Web",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "PLN",
+        "description": "Miesięczna subskrypcja"
+      },
+      "description": "Prosty formularz kontaktowy dla Twojej strony internetowej. Szybka instalacja, bezpieczne, przejrzyste.",
+      "featureList": [
+        "Szybka instalacja",
+        "Bezpieczne szyfrowanie",
+        "Wiadomości na email",
+        "Przejrzyste zasady"
+      ]
+    }
+  ]
+}
+</script>
 
 {{template "partials/footer" .}}
