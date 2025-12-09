@@ -24,26 +24,24 @@
     <div>
       <h3 class="text-xl font-semibold mb-3">1. Wygeneruj unikalny identyfikator (UUID)</h3>
       <div class="flex gap-2 my-4 flex-wrap">
-        <button onclick="generateUUID()" class="btn btn-primary">Wygeneruj UUID</button>
+        <button onclick="generateUUID()" class="btn btn-primary">Wygeneruj</button>
         <input
           type="text"
           id="uuid-output"
           readonly
           class="input input-bordered flex-1 min-w-[250px]"
-          placeholder="Kliknij 'Wygeneruj UUID'"
+          placeholder="Wygeneruj UUID formularza"
         />
-        <button onclick="copyUUID()" class="btn btn-outline">Kopiuj</button>
       </div>
     </div>
 
     <div>
       <h3 class="text-xl font-semibold mb-3">2. Dodaj formularz do swojej strony</h3>
       <p class="mb-4">
-        Skopiuj poniższy kod HTML i wklej na swoją stronę, zastępując
-        <code>TWOJ-UUID</code> wygenerowanym identyfikatorem:
+        Skopiuj poniższy kod HTML i wklej na swoją stronę:
       </p>
 
-      <div class="mockup-code w-full">
+      <div class="mockup-code w-full" style="position: relative; padding-bottom: 3rem;">
         <pre><code id="code-snippet"><span class="text-gray-400">&lt;</span><span class="text-purple-400">form</span> <span class="text-sky-400">action</span><span class="text-gray-400">=</span><span class="text-green-400">"https://mail.selfhosting.pl/submit/<span id="uuid-in-code">TWOJ-UUID</span>"</span> <span class="text-sky-400">method</span><span class="text-gray-400">=</span><span class="text-green-400">"POST"</span><span class="text-gray-400">&gt;</span>
   <span class="text-gray-400">&lt;</span><span class="text-purple-400">label</span> <span class="text-sky-400">for</span><span class="text-gray-400">=</span><span class="text-green-400">"email"</span><span class="text-gray-400">&gt;</span>Twój email:<span class="text-gray-400">&lt;/</span><span class="text-purple-400">label</span><span class="text-gray-400">&gt;</span>
   <span class="text-gray-400">&lt;</span><span class="text-purple-400">input</span> <span class="text-sky-400">type</span><span class="text-gray-400">=</span><span class="text-green-400">"email"</span> <span class="text-sky-400">id</span><span class="text-gray-400">=</span><span class="text-green-400">"email"</span> <span class="text-sky-400">name</span><span class="text-gray-400">=</span><span class="text-green-400">"email"</span> <span class="text-sky-400">required</span><span class="text-gray-400">&gt;</span>
@@ -53,7 +51,18 @@
 
   <span class="text-gray-400">&lt;</span><span class="text-purple-400">button</span> <span class="text-sky-400">type</span><span class="text-gray-400">=</span><span class="text-green-400">"submit"</span><span class="text-gray-400">&gt;</span>Wyślij<span class="text-gray-400">&lt;/</span><span class="text-purple-400">button</span><span class="text-gray-400">&gt;</span>
   <span class="text-gray-400">&lt;/</span><span class="text-purple-400">form</span><span class="text-gray-400">&gt;</span></code></pre>
+        <button
+          id="copy-code-btn"
+          onclick="copyCodeSnippet()"
+          class="btn btn-sm btn-primary"
+          style="position: absolute; bottom: 0.75rem; right: 0.75rem; display: none;">
+          Kopiuj kod
+        </button>
       </div>
+      <p class="text-sm mt-2">
+        Nie wiesz jak to zrobić?
+        <label for="tutorial-modal" class="link link-primary cursor-pointer">Zobacz tutorial</label>
+      </p>
     </div>
 
     <div>
@@ -81,17 +90,47 @@
       if (uuidInCode) {
         uuidInCode.textContent = uuid;
       }
+
+      // Pokaż przycisk "Kopiuj kod"
+      const copyBtn = document.getElementById('copy-code-btn');
+      if (copyBtn) {
+        copyBtn.style.display = 'inline-block';
+      }
     }
 
-    function copyUUID() {
-      const uuidField = document.getElementById("uuid-output");
-      if (uuidField.value) {
-        uuidField.select();
-        document.execCommand("copy");
-        alert("UUID skopiowany do schowka!");
-      } else {
-        alert("Najpierw wygeneruj UUID");
-      }
+    function copyCodeSnippet() {
+      const uuid = document.getElementById('uuid-output').value;
+
+      // Utwórz plain text wersję kodu formularza
+      const formCode = `<form action="https://mail.selfhosting.pl/submit/${uuid}" method="POST">
+  <label for="email">Twój email:</label>
+  <input type="email" id="email" name="email" required>
+
+  <label for="message">Wiadomość:</label>
+  <textarea id="message" name="message" required></textarea>
+
+  <button type="submit">Wyślij</button>
+</form>`;
+
+      // Skopiuj do schowka używając Clipboard API
+      navigator.clipboard.writeText(formCode).then(() => {
+        // Zmień tekst przycisku na feedback
+        const btn = document.getElementById('copy-code-btn');
+        const originalText = btn.textContent;
+        btn.textContent = 'Skopiowano!';
+        btn.classList.remove('btn-primary');
+        btn.classList.add('btn-success');
+
+        // Przywróć oryginalny tekst po 2 sekundach
+        setTimeout(() => {
+          btn.textContent = originalText;
+          btn.classList.remove('btn-success');
+          btn.classList.add('btn-primary');
+        }, 2000);
+      }).catch(err => {
+        // Fallback dla starszych przeglądarek
+        alert('Nie udało się skopiować kodu. Zaznacz i skopiuj manualnie.');
+      });
     }
   </script>
 
@@ -272,5 +311,28 @@
     ]
   }
 </script>
+
+<!-- Tutorial Modal -->
+<input type="checkbox" id="tutorial-modal" class="modal-toggle" />
+<div class="modal">
+  <div class="modal-box max-w-4xl">
+    <h3 class="font-bold text-lg mb-4">Jak dodać formularz na swoją stronę?</h3>
+    <div class="aspect-video">
+      <iframe
+        width="100%"
+        height="100%"
+        src="https://www.youtube.com/embed/dQw4w9WgXcQ"
+        title="Tutorial"
+        frameborder="0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen
+      ></iframe>
+    </div>
+    <div class="modal-action">
+      <label for="tutorial-modal" class="btn">Zamknij</label>
+    </div>
+  </div>
+  <label class="modal-backdrop" for="tutorial-modal"></label>
+</div>
 
 {{template "partials/footer" .}}
