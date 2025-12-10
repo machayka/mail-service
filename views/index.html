@@ -83,14 +83,14 @@
     // Google Ads conversion tracking
     function gtag_report_conversion(url) {
       var callback = function () {
-        if (typeof(url) != 'undefined') {
+        if (typeof url != "undefined") {
           window.location = url;
         }
       };
-      gtag('event', 'conversion', {
-          'send_to': 'AW-17786596642/-nlZCMTWn88bEKLap6FC',
-          'transaction_id': '',
-          'event_callback': callback
+      gtag("event", "conversion", {
+        send_to: "AW-17786596642/-nlZCMTWn88bEKLap6FC",
+        transaction_id: "",
+        event_callback: callback,
       });
       return false;
     }
@@ -405,7 +405,7 @@
       <iframe
         width="100%"
         height="100%"
-        src="https://www.youtube.com/embed/QxwFSEMPJIs?si=yRDJBfP04bL34e6I"
+        src="https://www.youtube.com/embed/8jgDixEjEro?si=l3YD2Pxko1O4V47Z"
         title="Tutorial"
         frameborder="0"
         allow="
