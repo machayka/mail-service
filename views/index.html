@@ -80,6 +80,21 @@
   </div>
 
   <script>
+    // Google Ads conversion tracking
+    function gtag_report_conversion(url) {
+      var callback = function () {
+        if (typeof(url) != 'undefined') {
+          window.location = url;
+        }
+      };
+      gtag('event', 'conversion', {
+          'send_to': 'AW-17786596642/-nlZCMTWn88bEKLap6FC',
+          'transaction_id': '',
+          'event_callback': callback
+      });
+      return false;
+    }
+
     function generateUUID() {
       const uuid = crypto.randomUUID();
       document.getElementById("uuid-output").value = uuid;
@@ -115,6 +130,9 @@
       navigator.clipboard
         .writeText(formCode)
         .then(() => {
+          // Śledzenie konwersji Google Ads
+          gtag_report_conversion();
+
           // Zmień tekst przycisku na feedback
           const btn = document.getElementById("copy-code-btn");
           const originalText = btn.textContent;
