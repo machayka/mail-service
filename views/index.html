@@ -53,17 +53,9 @@
           id="copy-code-btn"
           onclick="copyCodeSnippet()"
           class="btn btn-sm btn-primary"
-          style="position: absolute; bottom: 2.5rem; right: 0.75rem; display: none"
-        >
-          Kopiuj kod
-        </button>
-        <button
-          id="copy-raw-btn"
-          onclick="copyRawForm()"
-          class="btn btn-sm btn-outline"
           style="position: absolute; bottom: 0.75rem; right: 0.75rem; display: none"
         >
-          Kopiuj surowy formularz
+          Kopiuj formularz
         </button>
       </div>
       <p class="text-sm mt-2">
@@ -113,14 +105,10 @@
         uuidInCode.textContent = uuid;
       }
 
-      // Pokaż oba przyciski
+      // Pokaż przycisk "Kopiuj"
       const copyBtn = document.getElementById("copy-code-btn");
-      const copyRawBtn = document.getElementById("copy-raw-btn");
       if (copyBtn) {
         copyBtn.style.display = "inline-block";
-      }
-      if (copyRawBtn) {
-        copyRawBtn.style.display = "inline-block";
       }
     }
 
@@ -169,47 +157,6 @@
             btn.textContent = originalText;
             btn.classList.remove("btn-success");
             btn.classList.add("btn-primary");
-          }, 2000);
-        })
-        .catch((err) => {
-          // Fallback dla starszych przeglądarek
-          alert("Nie udało się skopiować kodu. Zaznacz i skopiuj manualnie.");
-        });
-    }
-
-    function copyRawForm() {
-      const uuid = document.getElementById("uuid-output").value;
-
-      // Utwórz surowy HTML formularza (bez stylów)
-      const rawFormCode = `<form action="https://mail.selfhosting.pl/submit/${uuid}" method="POST">
-  <label for="email">Twój email:</label>
-  <input type="email" id="email" name="email" required>
-
-  <label for="message">Wiadomość:</label>
-  <textarea id="message" name="message" required></textarea>
-
-  <button type="submit">Wyślij</button>
-</form>`;
-
-      // Skopiuj do schowka używając Clipboard API
-      navigator.clipboard
-        .writeText(rawFormCode)
-        .then(() => {
-          // Śledzenie konwersji Google Ads
-          gtag_report_conversion();
-
-          // Zmień tekst przycisku na feedback
-          const btn = document.getElementById("copy-raw-btn");
-          const originalText = btn.textContent;
-          btn.textContent = "Skopiowano!";
-          btn.classList.remove("btn-outline");
-          btn.classList.add("btn-success");
-
-          // Przywróć oryginalny tekst po 2 sekundach
-          setTimeout(() => {
-            btn.textContent = originalText;
-            btn.classList.remove("btn-success");
-            btn.classList.add("btn-outline");
           }, 2000);
         })
         .catch((err) => {
