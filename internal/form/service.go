@@ -35,7 +35,27 @@ func (s *Service) SendMessage(id string, d *FormData) error {
 	return err
 }
 
+// CheckIfFormExists sprawdza czy formularz o danym ID już istnieje
+func (s *Service) CheckIfFormExists(formID string) (*Form, error) {
+	form, err := s.repo.GetByID(formID)
+	if err == ErrNotFound {
+		return nil, nil // Formularz nie istnieje - OK
+	}
+	if err != nil {
+		return nil, err // Inny błąd bazy
+	}
+	return form, nil // Formularz ISTNIEJE
+}
+
 func (s *Service) CreateCheckout(f *Form) (string, error) {
+	existingForm, err := s.CheckIfFormExists(f.ID.String())
+	if err != nil {
+		return "", err
+	}
+	if existingForm != nil {
+		return "", ErrFormAlreadyExists
+	}
+
 	customerID, err := s.repo.GetStripeCustomerID(f.Email)
 	if err == sql.ErrNoRows {
 		// Użytkownik nie ma customerID w stripe -> musimy go stworzyć

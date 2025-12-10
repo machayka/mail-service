@@ -46,6 +46,17 @@ func (h *Handler) FormSubmit(c *fiber.Ctx) error {
 
 func (h *Handler) NewForm(c *fiber.Ctx) error {
 	id := c.Params("id")
+
+	// Sprawdź czy formularz już istnieje
+	existingForm, err := h.service.CheckIfFormExists(id)
+	if err != nil {
+		return err
+	}
+
+	if existingForm != nil {
+		return c.Status(fiber.StatusBadRequest).SendString("Ten formularz jest już aktywny")
+	}
+
 	return c.Render("new-form", fiber.Map{
 		"ID": id,
 	})
@@ -56,8 +67,12 @@ func (h *Handler) AddForm(c *fiber.Ctx) error {
 	if err := c.BodyParser(&form); err != nil {
 		return err
 	}
+
 	checkoutURL, err := h.service.CreateCheckout(&form)
 	if err != nil {
+		if err == ErrFormAlreadyExists {
+			return c.Status(fiber.StatusConflict).SendString("Ten formularz jest już aktywny")
+		}
 		return err
 	}
 	return c.Redirect(checkoutURL)

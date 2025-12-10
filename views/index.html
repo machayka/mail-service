@@ -53,9 +53,17 @@
           id="copy-code-btn"
           onclick="copyCodeSnippet()"
           class="btn btn-sm btn-primary"
-          style="position: absolute; bottom: 0.75rem; right: 0.75rem; display: none"
+          style="position: absolute; bottom: 2.5rem; right: 0.75rem; display: none"
         >
           Kopiuj kod
+        </button>
+        <button
+          id="copy-raw-btn"
+          onclick="copyRawForm()"
+          class="btn btn-sm btn-outline"
+          style="position: absolute; bottom: 0.75rem; right: 0.75rem; display: none"
+        >
+          Kopiuj surowy formularz
         </button>
       </div>
       <p class="text-sm mt-2">
@@ -105,25 +113,41 @@
         uuidInCode.textContent = uuid;
       }
 
-      // Pokaż przycisk "Kopiuj kod"
+      // Pokaż oba przyciski
       const copyBtn = document.getElementById("copy-code-btn");
+      const copyRawBtn = document.getElementById("copy-raw-btn");
       if (copyBtn) {
         copyBtn.style.display = "inline-block";
+      }
+      if (copyRawBtn) {
+        copyRawBtn.style.display = "inline-block";
       }
     }
 
     function copyCodeSnippet() {
       const uuid = document.getElementById("uuid-output").value;
 
-      // Utwórz plain text wersję kodu formularza
-      const formCode = `<form action="https://mail.selfhosting.pl/submit/${uuid}" method="POST">
-  <label for="email">Twój email:</label>
-  <input type="email" id="email" name="email" required>
+      // Utwórz stylizowaną wersję formularza z inline CSS
+      const formCode = `<form action="https://mail.selfhosting.pl/submit/${uuid}" method="POST"
+  style="max-width:420px;margin:0 auto;font-family:Arial, sans-serif;line-height:1.4;font-weight:400;">
 
-  <label for="message">Wiadomość:</label>
-  <textarea id="message" name="message" required></textarea>
+  <label for="email" style="display:block;margin-bottom:4px;font-weight:500;">
+    Twój email:
+  </label>
+  <input type="email" id="email" name="email" required
+    style="width:100%;padding:10px;border:1px solid #ccc;border-radius:6px;box-sizing:border-box;margin-bottom:12px;font-weight:400;">
 
-  <button type="submit">Wyślij</button>
+  <label for="message" style="display:block;margin-bottom:4px;font-weight:500;">
+    Wiadomość:
+  </label>
+  <textarea id="message" name="message" required rows="4"
+    style="width:100%;padding:10px;border:1px solid #ccc;border-radius:6px;box-sizing:border-box;margin-bottom:16px;resize:vertical;font-weight:400;"></textarea>
+
+  <button type="submit"
+    style="width:100%;padding:10px 0;background:#0055ff;color:#fff;border:none;border-radius:6px;cursor:pointer;font-weight:500;">
+    Wyślij
+  </button>
+
 </form>`;
 
       // Skopiuj do schowka używając Clipboard API
@@ -145,6 +169,47 @@
             btn.textContent = originalText;
             btn.classList.remove("btn-success");
             btn.classList.add("btn-primary");
+          }, 2000);
+        })
+        .catch((err) => {
+          // Fallback dla starszych przeglądarek
+          alert("Nie udało się skopiować kodu. Zaznacz i skopiuj manualnie.");
+        });
+    }
+
+    function copyRawForm() {
+      const uuid = document.getElementById("uuid-output").value;
+
+      // Utwórz surowy HTML formularza (bez stylów)
+      const rawFormCode = `<form action="https://mail.selfhosting.pl/submit/${uuid}" method="POST">
+  <label for="email">Twój email:</label>
+  <input type="email" id="email" name="email" required>
+
+  <label for="message">Wiadomość:</label>
+  <textarea id="message" name="message" required></textarea>
+
+  <button type="submit">Wyślij</button>
+</form>`;
+
+      // Skopiuj do schowka używając Clipboard API
+      navigator.clipboard
+        .writeText(rawFormCode)
+        .then(() => {
+          // Śledzenie konwersji Google Ads
+          gtag_report_conversion();
+
+          // Zmień tekst przycisku na feedback
+          const btn = document.getElementById("copy-raw-btn");
+          const originalText = btn.textContent;
+          btn.textContent = "Skopiowano!";
+          btn.classList.remove("btn-outline");
+          btn.classList.add("btn-success");
+
+          // Przywróć oryginalny tekst po 2 sekundach
+          setTimeout(() => {
+            btn.textContent = originalText;
+            btn.classList.remove("btn-success");
+            btn.classList.add("btn-outline");
           }, 2000);
         })
         .catch((err) => {
