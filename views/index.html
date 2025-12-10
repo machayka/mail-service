@@ -37,11 +37,9 @@
 
     <div>
       <h3 class="text-xl font-semibold mb-3">2. Dodaj formularz do swojej strony</h3>
-      <p class="mb-4">
-        Skopiuj poniższy kod HTML i wklej na swoją stronę:
-      </p>
+      <p class="mb-4">Skopiuj poniższy kod HTML i wklej na swoją stronę:</p>
 
-      <div class="mockup-code w-full" style="position: relative; padding-bottom: 3rem;">
+      <div class="mockup-code w-full" style="position: relative; padding-bottom: 3rem">
         <pre><code id="code-snippet"><span class="text-gray-400">&lt;</span><span class="text-purple-400">form</span> <span class="text-sky-400">action</span><span class="text-gray-400">=</span><span class="text-green-400">"https://mail.selfhosting.pl/submit/<span id="uuid-in-code">TWOJ-UUID</span>"</span> <span class="text-sky-400">method</span><span class="text-gray-400">=</span><span class="text-green-400">"POST"</span><span class="text-gray-400">&gt;</span>
   <span class="text-gray-400">&lt;</span><span class="text-purple-400">label</span> <span class="text-sky-400">for</span><span class="text-gray-400">=</span><span class="text-green-400">"email"</span><span class="text-gray-400">&gt;</span>Twój email:<span class="text-gray-400">&lt;/</span><span class="text-purple-400">label</span><span class="text-gray-400">&gt;</span>
   <span class="text-gray-400">&lt;</span><span class="text-purple-400">input</span> <span class="text-sky-400">type</span><span class="text-gray-400">=</span><span class="text-green-400">"email"</span> <span class="text-sky-400">id</span><span class="text-gray-400">=</span><span class="text-green-400">"email"</span> <span class="text-sky-400">name</span><span class="text-gray-400">=</span><span class="text-green-400">"email"</span> <span class="text-sky-400">required</span><span class="text-gray-400">&gt;</span>
@@ -55,7 +53,8 @@
           id="copy-code-btn"
           onclick="copyCodeSnippet()"
           class="btn btn-sm btn-primary"
-          style="position: absolute; bottom: 0.75rem; right: 0.75rem; display: none;">
+          style="position: absolute; bottom: 0.75rem; right: 0.75rem; display: none"
+        >
           Kopiuj kod
         </button>
       </div>
@@ -92,14 +91,14 @@
       }
 
       // Pokaż przycisk "Kopiuj kod"
-      const copyBtn = document.getElementById('copy-code-btn');
+      const copyBtn = document.getElementById("copy-code-btn");
       if (copyBtn) {
-        copyBtn.style.display = 'inline-block';
+        copyBtn.style.display = "inline-block";
       }
     }
 
     function copyCodeSnippet() {
-      const uuid = document.getElementById('uuid-output').value;
+      const uuid = document.getElementById("uuid-output").value;
 
       // Utwórz plain text wersję kodu formularza
       const formCode = `<form action="https://mail.selfhosting.pl/submit/${uuid}" method="POST">
@@ -113,24 +112,27 @@
 </form>`;
 
       // Skopiuj do schowka używając Clipboard API
-      navigator.clipboard.writeText(formCode).then(() => {
-        // Zmień tekst przycisku na feedback
-        const btn = document.getElementById('copy-code-btn');
-        const originalText = btn.textContent;
-        btn.textContent = 'Skopiowano!';
-        btn.classList.remove('btn-primary');
-        btn.classList.add('btn-success');
+      navigator.clipboard
+        .writeText(formCode)
+        .then(() => {
+          // Zmień tekst przycisku na feedback
+          const btn = document.getElementById("copy-code-btn");
+          const originalText = btn.textContent;
+          btn.textContent = "Skopiowano!";
+          btn.classList.remove("btn-primary");
+          btn.classList.add("btn-success");
 
-        // Przywróć oryginalny tekst po 2 sekundach
-        setTimeout(() => {
-          btn.textContent = originalText;
-          btn.classList.remove('btn-success');
-          btn.classList.add('btn-primary');
-        }, 2000);
-      }).catch(err => {
-        // Fallback dla starszych przeglądarek
-        alert('Nie udało się skopiować kodu. Zaznacz i skopiuj manualnie.');
-      });
+          // Przywróć oryginalny tekst po 2 sekundach
+          setTimeout(() => {
+            btn.textContent = originalText;
+            btn.classList.remove("btn-success");
+            btn.classList.add("btn-primary");
+          }, 2000);
+        })
+        .catch((err) => {
+          // Fallback dla starszych przeglądarek
+          alert("Nie udało się skopiować kodu. Zaznacz i skopiuj manualnie.");
+        });
     }
   </script>
 
@@ -142,29 +144,69 @@
     <!-- Lewa kolumna - checkmarki -->
     <div class="space-y-4">
       <div class="flex items-start gap-3">
-        <svg class="w-6 h-6 text-success mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+        <svg
+          class="w-6 h-6 text-success mt-1 flex-shrink-0"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M5 13l4 4L19 7"
+          ></path>
         </svg>
         <p class="text-lg">Nie potrzebujesz serwera</p>
       </div>
 
       <div class="flex items-start gap-3">
-        <svg class="w-6 h-6 text-success mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+        <svg
+          class="w-6 h-6 text-success mt-1 flex-shrink-0"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M5 13l4 4L19 7"
+          ></path>
         </svg>
         <p class="text-lg">Nie potrzebujesz bazy danych</p>
       </div>
 
       <div class="flex items-start gap-3">
-        <svg class="w-6 h-6 text-success mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+        <svg
+          class="w-6 h-6 text-success mt-1 flex-shrink-0"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M5 13l4 4L19 7"
+          ></path>
         </svg>
         <p class="text-lg">Nie musisz uczyć się API ani frameworków</p>
       </div>
 
       <div class="flex items-start gap-3">
-        <svg class="w-6 h-6 text-success mt-1 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+        <svg
+          class="w-6 h-6 text-success mt-1 flex-shrink-0"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M5 13l4 4L19 7"
+          ></path>
         </svg>
         <p class="text-lg">Idealny dla statycznych stron</p>
       </div>
@@ -173,7 +215,11 @@
     <!-- Prawa kolumna - działający formularz -->
     <div class="card bg-base-200 shadow-lg">
       <div class="card-body">
-        <form action="https://mail.selfhosting.pl/submit/a5ef6f80-9325-4ed1-af5a-1c758971feb1" method="POST" class="space-y-4">
+        <form
+          action="https://mail.selfhosting.pl/submit/a5ef6f80-9325-4ed1-af5a-1c758971feb1"
+          method="POST"
+          class="space-y-4"
+        >
           <div class="form-control">
             <label class="label" for="demo-email">
               <span class="label-text">Email</span>
@@ -213,10 +259,18 @@
     <div class="hero-content text-center">
       <div class="max-w-2xl">
         <h2 class="text-3xl font-bold mb-4">Skopiuj i wklej</h2>
-        <p class="text-xl mb-6">
-          Nie trać klientów. Ułatw im kontakt.
-        </p>
-        <a href="#" onclick="document.querySelector('button[onclick=\'generateUUID()\']').click(); document.querySelector('button[onclick=\'generateUUID()\']').scrollIntoView({ behavior: 'smooth', block: 'center' }); return false;" class="btn btn-primary btn-lg">
+        <p class="text-xl mb-6">Nie trać klientów. Ułatw im kontakt.</p>
+        <a
+          href="#"
+          onclick="
+            document.querySelector('button[onclick=\'generateUUID()\']').click();
+            document
+              .querySelector('button[onclick=\'generateUUID()\']')
+              .scrollIntoView({ behavior: 'smooth', block: 'center' });
+            return false;
+          "
+          class="btn btn-primary btn-lg"
+        >
           Wygeneruj swój formularz
         </a>
       </div>
@@ -321,10 +375,17 @@
       <iframe
         width="100%"
         height="100%"
-        src="https://www.youtube.com/embed/dQw4w9WgXcQ"
+        src="https://www.youtube.com/embed/QxwFSEMPJIs?si=yRDJBfP04bL34e6I"
         title="Tutorial"
         frameborder="0"
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allow="
+          accelerometer;
+          autoplay;
+          clipboard-write;
+          encrypted-media;
+          gyroscope;
+          picture-in-picture;
+        "
         allowfullscreen
       ></iframe>
     </div>
